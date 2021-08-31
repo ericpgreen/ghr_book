@@ -1,0 +1,24 @@
+bookdown::bs4_book:
+  css: bs4_style.css
+  theme:
+    primary: "#096B72"
+  repo: https://github.com/rstudio/bookdown-demo
+bookdown::pdf_book:
+  includes:
+    in_header: preamble.tex
+  latex_engine: xelatex
+  citation_package: natbib
+  keep_tex: yes
+  base_format: tufte::tufte_book
+  highlight: tango
+msmbstyle::msmb_html_book:
+  tufte_variant: "envisioned"
+  toc: TRUE
+  toc_depth: 1
+  split_by: chapter
+  split_bib: yes
+  margin_references: TRUE
+  css: [stylemsmb.css, center.css, custom-msmbstyle.css]
+  includes:
+    in_header: google_analytics.html
+    after_body: footer.html

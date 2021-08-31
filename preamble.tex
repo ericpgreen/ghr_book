@@ -1,0 +1,91 @@
+\usepackage{booktabs}
+\usepackage{mparhack} % https://tex.stackexchange.com/a/236380/30017
+
+\PassOptionsToPackage{round}{natbib}
+\setcitestyle{super}
+\renewcommand*{\citep}[1]{{\cite{#1}}}
+\renewcommand*{\citet}[1]{{\cite{#1}}}
+
+% fonts
+
+\usepackage{fontspec}
+\setmainfont{LibreBaskerville-Regular}
+\setsansfont{SourceSansPro-Regular}
+\setmonofont{Inconsolata}
+\setsidenotefont{\fontspec{SourceSansPro-ExtraLight}[Scale=0.8]}
+\setcaptionfont{\fontspec{SourceSansPro-ExtraLight}[Scale=0.8]}
+\setmarginnotefont{\fontspec{SourceSansPro-ExtraLight}[Scale=0.8]}
+\setcitationfont{\fontspec{SourceSansPro-ExtraLight}[Scale=0.8]}
+
+% headers
+
+\usepackage{fancyhdr}
+\setlength{\headheight}{15pt}
+
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{ \markboth{#1}{} }
+\renewcommand{\sectionmark}[1]{ \markright{#1} }
+
+\fancyhf{}
+\fancyhead[LE]{\thepage\space\space\space$\cdotp$\space\space\space\chaptername\space\thechapter}
+\fancyhead[RO]{\leftmark\space\space\space$\cdotp$\space\space\space\thepage}
+
+\fancypagestyle{plain}{ %
+  \fancyhf{} % remove everything
+  \renewcommand{\headrulewidth}{0pt} % remove lines as well
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+% title page and level headings
+
+\usepackage[svgnames]{xcolor}
+\usepackage{titlesec}
+\usepackage{xhfill}
+\colorlet{rulecolor}{Gainsboro!40!Lavender}
+\usepackage{lipsum}
+
+\titleformat{\chapter}[display]
+{\filcenter}{\mbox{}\xrfill[0.4ex]{3pt}[rulecolor]\bfseries\sffamily{\large\enspace\chaptername\space\thechapter}\enspace\xrfill[0.4ex]{3pt}[rulecolor]\mbox{}}{0.3ex} {{\color{rulecolor}\titlerule[1pt]}\vskip3ex\huge\bfseries\sffamily}[\medskip{\color{rulecolor}\titlerule[1pt]}]
+
+\usepackage{titling}
+
+\pretitle{\begin{flushleft}\huge\bfseries}
+\posttitle{\par\end{flushleft}}
+
+\preauthor{\begin{flushleft}\Large\bfseries}
+\postauthor{\par\end{flushleft}}
+
+\predate{\begin{flushleft}\large\mdseries}
+\postdate{\par\end{flushleft}}
+
+\titleformat*{\section}{\LARGE\bfseries\sffamily}
+\titleformat*{\subsection}{\Large\bfseries\sffamily}
+\usepackage[svgnames]{xcolor}
+
+% table of contents
+
+\usepackage{titletoc}
+
+\contentsmargin[1cm]{0cm}
+\titlecontents{chapter}[0em]{\vskip12pt\Large\bfseries\sffamily}
+{\thecontentslabel\enspace}
+{\hspace{1.05em}}
+{ \hfill\contentspage}[\vskip 6pt]
+
+\titlecontents{section}[1em]{\mdseries\sffamily}
+{\thecontentslabel\enspace}
+{}
+{\titlerule*[1pc]{.}\quad\contentspage}[\vskip 4pt]
+
+\titlecontents{subsection}[2.7em]{\mdseries\sffamily}
+{\thecontentslabel\enspace}
+{}
+{\titlerule*[1pc]{.}\quad\contentspage}[\vskip 3pt]
+
+\usepackage{etoolbox}
+\pretocmd{\contentsname}{\sffamily}{}{}
+
+% code blocks
+
+
+
