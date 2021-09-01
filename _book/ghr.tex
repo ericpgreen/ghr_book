@@ -68,10 +68,13 @@
 % title / author / date
 \title{Global Health Research}
 \author{Eric P. Green}
-\date{2021-08-31}
+\date{2021-09-01}
 
 \usepackage{booktabs}
 \usepackage{mparhack} % https://tex.stackexchange.com/a/236380/30017
+\usepackage{parskip}
+
+% citations
 
 \PassOptionsToPackage{round}{natbib}
 \setcitestyle{super}
@@ -87,7 +90,7 @@
 \setsidenotefont{\fontspec{SourceSansPro-ExtraLight}[Scale=0.8]}
 \setcaptionfont{\fontspec{SourceSansPro-ExtraLight}[Scale=0.8]}
 \setmarginnotefont{\fontspec{SourceSansPro-ExtraLight}[Scale=0.8]}
-\setcitationfont{\fontspec{SourceSansPro-ExtraLight}[Scale=0.8]}
+\setcitationfont{\fontspec{SourceSansPro-ExtraLight}[Scale=0.8]\color{gray}}
 
 % headers
 
@@ -157,10 +160,12 @@
 \usepackage{etoolbox}
 \pretocmd{\contentsname}{\sffamily}{}{}
 
-% code blocks
+% margins
 
+% The default minimum amount of space between \marginnotes is 10 pt.
+%\setlength\marginparpush{10pt}
 
-
+\AtBeginEnvironment{marginfigure}{\linespread{0.5}}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -183,7 +188,7 @@
 
 
 {
-\setcounter{tocdepth}{1}
+\setcounter{tocdepth}{0}
 \tableofcontents
 }
 
@@ -214,18 +219,55 @@ Consider replacing
 \hypertarget{ghr}{%
 \chapter{Global Health Research}\label{ghr}}
 
-All chapters start with a first-level heading followed by your chapter title, like the line above. There should be only one first-level heading (\texttt{\#}) per .Rmd file.
+\hypertarget{what-is-global-health}{%
+\section{What is Global Health?}\label{what-is-global-health}}
 
-\hypertarget{a-section}{%
-\section{A section}\label{a-section}}
+\emph{New York County Courthouse, circa 2009}
 
-All chapter sections start with a second-level (\texttt{\#\#}) or higher heading followed by your section title, like the sections above and below here. You can have as many as you want within a chapter.
+\textbf{Judge presiding over jury selection:} And what do you do, Mr.~Green?
 
-\hypertarget{an-unnumbered-section}{%
-\subsection*{An unnumbered section}\label{an-unnumbered-section}}
-\addcontentsline{toc}{subsection}{An unnumbered section}
+\textbf{Me:} I do research in global health.
 
-Chapters and sections are numbered by default. To un-number a heading, add a \texttt{\{.unnumbered\}} or the shorter \texttt{\{-\}} at the end of the heading, like in this section.
+\textbf{Judge:}
+
+\textbf{Me:} Access to mental health services, things like that.
+
+\textbf{Judge:} So health policy then?
+
+\textbf{Me:} No, studies on interventions to expand access to care.
+
+\textbf{Judge}: All around the globe.
+
+\textbf{Me:} No, I don't work globally.
+
+\textbf{Judge:} What is global health, Mr.~Green?
+
+\textbf{Me:} Well, you see\ldots{}\emph{rambles}\ldots{}
+
+\textbf{Judge:} Thank you. Mr.~Green, you are dismissed.
+
+In fairness to the Honorable Judge, it's not clear what I should have expected her to imagine when I said ``global health''. Everyone understands medicine, and most folks probably have a good sense of what we mean by public health. But what is global health?
+
+Maybe I would have made the cut had I said, ``\textbf{global health is the study and practice of improving health and achieving equity in health for all people worldwide}''. This is how \citet{koplan:2009} defined global health in a \emph{Lancet} article published a few months after my court appearance. They also offered this longer version:
+
+\begin{quote}
+\textbf{Global health} emphasises transnational health issues, determinants, and solutions; involves many disciplines within and beyond the health sciences and promotes interdisciplinary collaboration; and is a synthesis of population-based prevention with individual-level clinical care.
+\end{quote}
+
+\begin{marginfigure}
+``Determinants'' of health/illness is one of those terms that you'll
+come across a lot in global health. It refers to the things that
+contribute to our health and wellbeing.
+\href{http://tinyurl.com/zvdxezv}{Pretty much everything}. Ironically,
+despite sounding so \emph{deterministic}, the study of determinants is
+mostly \emph{probabilistic}. A social determinant like poverty is
+generally associated with worse health outcomes, but not everyone living
+in poverty has the same experience.
+\end{marginfigure}
+
+This definition reflects the reality that the determinants of ill health and inequality are complex, so the search for solutions must span multiple disciplines. In the study of malaria, for example, you can read about the spread of the disease (epidemiology), the impact of illness on future productivity (economics), the merits of free or subsidized bed nets (public policy), mosquito habitats (ecology), the efficacy of vaccines to prevent the disease (medicine and statistics), rapid diagnostic tests (biomedical engineering), and the adoption and use of bed nets (psychology), just to name a few areas of inquiry.
+
+Therefore, we say that global health research is multidisciplinary and interdisciplinary. It is \textbf{multidisciplinary} in the sense that no one field can solve the great global health challenges of our time, and \textbf{interdisciplinary} because collaboration is core to progress \citep{merson:2011}.
 
 \hypertarget{acknowledgements}{%
 \chapter*{Acknowledgements}\label{acknowledgements}}

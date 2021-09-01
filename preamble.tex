@@ -1,5 +1,8 @@
 \usepackage{booktabs}
 \usepackage{mparhack} % https://tex.stackexchange.com/a/236380/30017
+\usepackage{parskip}
+
+% citations
 
 \PassOptionsToPackage{round}{natbib}
 \setcitestyle{super}
@@ -15,7 +18,7 @@
 \setsidenotefont{\fontspec{SourceSansPro-ExtraLight}[Scale=0.8]}
 \setcaptionfont{\fontspec{SourceSansPro-ExtraLight}[Scale=0.8]}
 \setmarginnotefont{\fontspec{SourceSansPro-ExtraLight}[Scale=0.8]}
-\setcitationfont{\fontspec{SourceSansPro-ExtraLight}[Scale=0.8]}
+\setcitationfont{\fontspec{SourceSansPro-ExtraLight}[Scale=0.8]\color{gray}}
 
 % headers
 
@@ -85,7 +88,9 @@
 \usepackage{etoolbox}
 \pretocmd{\contentsname}{\sffamily}{}{}
 
-% code blocks
+% margins
 
+% The default minimum amount of space between \marginnotes is 10 pt.
+%\setlength\marginparpush{10pt}
 
-
+\AtBeginEnvironment{marginfigure}{\linespread{0.5}}

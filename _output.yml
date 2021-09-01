@@ -11,6 +11,8 @@ bookdown::pdf_book:
   keep_tex: yes
   base_format: tufte::tufte_book
   highlight: tango
+  toc: true
+  toc_depth: 1
 msmbstyle::msmb_html_book:
   tufte_variant: "envisioned"
   toc: TRUE
