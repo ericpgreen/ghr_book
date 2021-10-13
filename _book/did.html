@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Chapter 15 Difference-in-Differences | Global Health Research" />
+<meta property="og:type" content="book" />
+<meta property="og:url" content="http://themethodsection.com/ebook/" />
+<meta property="og:image" content="http://themethodsection.com/ebook/images/cover.jpg" />
+<meta property="og:description" content="Online textbook about global health research methods" />
+
+
+<meta name="author" content="Eric P. Green" />
+
+<meta name="date" content="2021-10-11" />
+
+
+<meta name="description" content="Online textbook about global health research methods">
+
+<title>Chapter 15 Difference-in-Differences | Global Health Research</title>
+
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
+<link href="libs/msmb-css-0/msmb.css" rel="stylesheet" />
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-10766227-12"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-10766227-12');
+</script>
+
+
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="stylemsmb.css" type="text/css" />
+<script>
+function toggle_visibility(id1, id2) {
+var e = document.getElementById(id1);
+var f = document.getElementById(id2);
+
+e.style.display = ((e.style.display!='none') ? 'none' : 'block');
+
+if(f.classList.contains('fa-plus-square')) {
+    f.classList.add('fa-minus-square')
+    f.classList.remove('fa-plus-square')
+} else {
+    f.classList.add('fa-plus-square')
+    f.classList.remove('fa-minus-square')
+}
+
+}
+</script>
+<link rel="stylesheet" href="center.css" type="text/css" />
+<link rel="stylesheet" href="custom-msmbstyle.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul class="navbar">
+<li class="msmb"><p class="title">Global Health Research<p><p class="author">Eric P. Green</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="index.html">Welcome</a>
+<a href="preface.html">Preface</a>
+<a href="introduction.html">Introduction</a>
+<a href="">(PART) START WITH A TEAM AND A QUESTION</a>
+<a href="ghr.html"><span class="toc-section-number">1</span> Global Health Research</a>
+<a href="collaborations.html"><span class="toc-section-number">2</span> Build Collaborations</a>
+<a href="ideas.html"><span class="toc-section-number">3</span> Develop Research Ideas and Questions</a>
+<a href="">(PART) GET TO KNOW THE SCIENTIFIC LITERATURE</a>
+<a href="searching.html"><span class="toc-section-number">4</span> Search the Literature</a>
+<a href="reading.html"><span class="toc-section-number">5</span> Read Scientific Articles</a>
+<a href="reviews.html"><span class="toc-section-number">6</span> Use Systematic Reviews and Meta-Analyses</a>
+<a href="">(PART) CONSIDER THREATS TO VALIDITY</a>
+<a href="statinfer.html"><span class="toc-section-number">7</span> Statistical Inference</a>
+<a href="causalinfer.html"><span class="toc-section-number">8</span> Causal Inference</a>
+<a href="external.html"><span class="toc-section-number">9</span> External Validity and Generalizability</a>
+<a href="construct.html"><span class="toc-section-number">10</span> Construct Validity</a>
+<a href="">(PART) SELECT A RESEARCH DESIGN</a>
+<a href="experiments.html"><span class="toc-section-number">11</span> Randomized Experiments</a>
+<a href="ivnatural.html"><span class="toc-section-number">12</span> Instrumental Variables and Natural Experiments</a>
+<a href="prepost.html"><span class="toc-section-number">13</span> Single-Group Pre-Post</a>
+<a href="postpost.html"><span class="toc-section-number">14</span> Multiple Group Post-Test Only</a>
+<a id="active-page" href="did.html"><span class="toc-section-number">15</span> Difference-in-Differences</a>
+<a href="its.html"><span class="toc-section-number">16</span> Interrupted Time Series</a>
+<a href="rd.html"><span class="toc-section-number">17</span> Regression Discontinuity</a>
+<a href="qualdesigns.html"><span class="toc-section-number">18</span> Qualitative Research Designs</a>
+<a href="case.html"><span class="toc-section-number">19</span> Case Reports</a>
+<a href="xsectional.html"><span class="toc-section-number">20</span> Cross-Sectional and Correlational Studies</a>
+<a href="casecontrol.html"><span class="toc-section-number">21</span> Case-Control Studies</a>
+<a href="cohort.html"><span class="toc-section-number">22</span> Cohort Studies</a>
+<a href="accuracy.html"><span class="toc-section-number">23</span> Diagnostic Accuracy Studies</a>
+<a href="prediction.html"><span class="toc-section-number">24</span> Medical Records and Clinical Prediction Modeling</a>
+<a href="implementation.html"><span class="toc-section-number">25</span> Implementation Research</a>
+<a href="sampling.html"><span class="toc-section-number">26</span> Sampling and Participant Recruitment</a>
+<a href="">(PART) WRITE THE METHOD SECTION</a>
+<a href="surveys.html"><span class="toc-section-number">27</span> Surveys</a>
+<a href="nonsurvey.html"><span class="toc-section-number">28</span> Non-Survey Instruments</a>
+<a href="qualdata.html"><span class="toc-section-number">29</span> Qualitative Data Collection</a>
+<a href="secondary.html"><span class="toc-section-number">30</span> Secondary Data Analysis</a>
+<a href="pilot.html"><span class="toc-section-number">31</span> Pilot Trials and Preliminary Studies</a>
+<a href="power.html"><span class="toc-section-number">32</span> Power and Sample Size</a>
+<a href="ethics.html"><span class="toc-section-number">33</span> Research Ethics</a>
+<a href="">(PART) CONDUCT THE STUDY</a>
+<a href="openscience.html"><span class="toc-section-number">34</span> Practice Open Science</a>
+<a href="fieldwork.html"><span class="toc-section-number">35</span> Fieldwork</a>
+<a href="data.html"><span class="toc-section-number">36</span> Data Processing</a>
+<a href="">(PART) MAKE AN IMPACT</a>
+<a href="dissemination.html"><span class="toc-section-number">37</span> Publish and Disseminate Your Work</a>
+<a href="policy.html"><span class="toc-section-number">38</span> Impact Policy and Practice</a>
+<a href="acknowledgements.html">Acknowledgements</a>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><div id="did" class="section level1" number="15">
+<h1>
+<span class="header-section-number">Chapter 15</span> Difference-in-Differences</h1>
+
+</div></body></html>
+
+<p style="text-align: center;">
+<a href="postpost.html"><button class="btn btn-default">Previous</button></a>
+<a href="its.html"><button class="btn btn-default">Next</button></a>
+</p>
+<p class="build-date">Page built: 
+2021-10-11
+ using 
+R version 4.0.2 (2020-06-22)
+</p>
+</div>
+</div>
+
+<div class="row" style="padding-top: 2em;">
+<p style="text-align: center">
+<img src="images/logo_dark.png" style="width: 100px; padding: 0; display: inline; vertical-align: top">
+<span style="display: inline-block; margin-left: 2em; margin-top: 16px; font-size: small">
+<span style="font-weight: bold;">Eric P. Green</span><br/>
+<a href="https://themethodsection.com">themethodsection.com</a><br/>
+page built  2021-10-11
+</span>
+</p>
+</div>
+
+
+</body>
+</html>

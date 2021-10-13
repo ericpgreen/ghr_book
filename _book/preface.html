@@ -14,7 +14,7 @@
 
 <meta name="author" content="Eric P. Green" />
 
-<meta name="date" content="2021-09-01" />
+<meta name="date" content="2021-10-11" />
 
 
 <meta name="description" content="Online textbook about global health research methods">
@@ -25,6 +25,8 @@
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
 <link href="libs/msmb-css-0/msmb.css" rel="stylesheet" />
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-10766227-12"></script>
 <script>
@@ -99,9 +101,52 @@ if(f.classList.contains('fa-plus-square')) {
 <a href="index.html">Welcome</a>
 <a id="active-page" href="preface.html">Preface</a>
 <a href="introduction.html">Introduction</a>
+<a href="">(PART) START WITH A TEAM AND A QUESTION</a>
 <a href="ghr.html"><span class="toc-section-number">1</span> Global Health Research</a>
+<a href="collaborations.html"><span class="toc-section-number">2</span> Build Collaborations</a>
+<a href="ideas.html"><span class="toc-section-number">3</span> Develop Research Ideas and Questions</a>
+<a href="">(PART) GET TO KNOW THE SCIENTIFIC LITERATURE</a>
+<a href="searching.html"><span class="toc-section-number">4</span> Search the Literature</a>
+<a href="reading.html"><span class="toc-section-number">5</span> Read Scientific Articles</a>
+<a href="reviews.html"><span class="toc-section-number">6</span> Use Systematic Reviews and Meta-Analyses</a>
+<a href="">(PART) CONSIDER THREATS TO VALIDITY</a>
+<a href="statinfer.html"><span class="toc-section-number">7</span> Statistical Inference</a>
+<a href="causalinfer.html"><span class="toc-section-number">8</span> Causal Inference</a>
+<a href="external.html"><span class="toc-section-number">9</span> External Validity and Generalizability</a>
+<a href="construct.html"><span class="toc-section-number">10</span> Construct Validity</a>
+<a href="">(PART) SELECT A RESEARCH DESIGN</a>
+<a href="experiments.html"><span class="toc-section-number">11</span> Randomized Experiments</a>
+<a href="ivnatural.html"><span class="toc-section-number">12</span> Instrumental Variables and Natural Experiments</a>
+<a href="prepost.html"><span class="toc-section-number">13</span> Single-Group Pre-Post</a>
+<a href="postpost.html"><span class="toc-section-number">14</span> Multiple Group Post-Test Only</a>
+<a href="did.html"><span class="toc-section-number">15</span> Difference-in-Differences</a>
+<a href="its.html"><span class="toc-section-number">16</span> Interrupted Time Series</a>
+<a href="rd.html"><span class="toc-section-number">17</span> Regression Discontinuity</a>
+<a href="qualdesigns.html"><span class="toc-section-number">18</span> Qualitative Research Designs</a>
+<a href="case.html"><span class="toc-section-number">19</span> Case Reports</a>
+<a href="xsectional.html"><span class="toc-section-number">20</span> Cross-Sectional and Correlational Studies</a>
+<a href="casecontrol.html"><span class="toc-section-number">21</span> Case-Control Studies</a>
+<a href="cohort.html"><span class="toc-section-number">22</span> Cohort Studies</a>
+<a href="accuracy.html"><span class="toc-section-number">23</span> Diagnostic Accuracy Studies</a>
+<a href="prediction.html"><span class="toc-section-number">24</span> Medical Records and Clinical Prediction Modeling</a>
+<a href="implementation.html"><span class="toc-section-number">25</span> Implementation Research</a>
+<a href="sampling.html"><span class="toc-section-number">26</span> Sampling and Participant Recruitment</a>
+<a href="">(PART) WRITE THE METHOD SECTION</a>
+<a href="surveys.html"><span class="toc-section-number">27</span> Surveys</a>
+<a href="nonsurvey.html"><span class="toc-section-number">28</span> Non-Survey Instruments</a>
+<a href="qualdata.html"><span class="toc-section-number">29</span> Qualitative Data Collection</a>
+<a href="secondary.html"><span class="toc-section-number">30</span> Secondary Data Analysis</a>
+<a href="pilot.html"><span class="toc-section-number">31</span> Pilot Trials and Preliminary Studies</a>
+<a href="power.html"><span class="toc-section-number">32</span> Power and Sample Size</a>
+<a href="ethics.html"><span class="toc-section-number">33</span> Research Ethics</a>
+<a href="">(PART) CONDUCT THE STUDY</a>
+<a href="openscience.html"><span class="toc-section-number">34</span> Practice Open Science</a>
+<a href="fieldwork.html"><span class="toc-section-number">35</span> Fieldwork</a>
+<a href="data.html"><span class="toc-section-number">36</span> Data Processing</a>
+<a href="">(PART) MAKE AN IMPACT</a>
+<a href="dissemination.html"><span class="toc-section-number">37</span> Publish and Disseminate Your Work</a>
+<a href="policy.html"><span class="toc-section-number">38</span> Impact Policy and Practice</a>
 <a href="acknowledgements.html">Acknowledgements</a>
-<a href="references.html">References</a>
 </div>
 </li>
 </ul>
@@ -113,13 +158,7 @@ if(f.classList.contains('fa-plus-square')) {
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body><div id="preface" class="section level1 unnumbered">
 <h1>Preface</h1>
-<p>This book will introduce you to research designs and methods in global health. I wrote this text for undergraduate and graduate students taking my <a href="http://www.globalhealthresearch.co/">introductory course at Duke University</a>. Therefore, it shares the two central aims of my course: to make you a better consumer of health research, and to help you design your first global health study.</p>
-<p>Something about global health. <span class="citation"><label for="tufte-mn-1" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-1" class="margin-toggle">White et al. (2017)<span class="marginnote">White, M. T., Satterfield, C. A., &amp; Blackard, J. T. (2017). Essential competencies in global health research for medical trainees: A narrative review. <em>Medical Teacher</em>, <em>39</em>(9), 945–953.</span></span> have ideas.</p>
-<p>Part I begins with an introduction to global health research and teaches you how to identify research problems, search the literature, and practice critical appraisal. In Module 2, you’ll learn how to ask evidence-based research questions, create study aims, integrate theory, and specify important constructs, outcomes, and indicators. Module 3 is all about inference: statistical inference, causal inference, and generalizability.</p>
-<p>We’ll turn to research designs in Module 4. In global health, we are often interested in knowing what treatments, programs, interventions, and policies “work” and why. To answer questions of impact, researchers sometimes design randomized controlled trials. Randomization is not always possible or advisable, however, and researchers must build a causal argument using non-experimental designs. We’ll consider the strengths and limitations of research designs most commonly used in the behavioral and social sciences, public health, and medicine.</p>
-<p>Module 5 will help you fill in the remaining details for a Method section. In particular, you’ll learn about data collection procedures and planning for data analysis. Module 6 concludes with a discussion of how to practice good science and make an impact with your work.</p>
-<p>One limitation of this book is it does not teach statistics. Statistical concepts are discussed throughout but not in great detail. Because statistical analysis is an intrinsic part of the study design stage, I recommend downloading a copy of <a href="https://www.openintro.org/stat/"><em>OpenIntro Statistics</em></a> and reading it alongside this book.</p>
-<p>Visit <a href="http://themethodsection.com/">themethodsection.com</a> for additional materials.</p>
+<p>Add</p>
 
 </div></body></html>
 
@@ -128,7 +167,7 @@ if(f.classList.contains('fa-plus-square')) {
 <a href="introduction.html"><button class="btn btn-default">Next</button></a>
 </p>
 <p class="build-date">Page built: 
-2021-09-01
+2021-10-11
  using 
 R version 4.0.2 (2020-06-22)
 </p>
@@ -141,7 +180,7 @@ R version 4.0.2 (2020-06-22)
 <span style="display: inline-block; margin-left: 2em; margin-top: 16px; font-size: small">
 <span style="font-weight: bold;">Eric P. Green</span><br/>
 <a href="https://themethodsection.com">themethodsection.com</a><br/>
-page built  2021-09-01
+page built  2021-10-11
 </span>
 </p>
 </div>

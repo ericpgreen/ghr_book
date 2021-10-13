@@ -43,7 +43,7 @@
 
 % citations
 \usepackage{natbib}
-\bibliographystyle{plainnat}
+\bibliographystyle{apalike-etal}
 
 
 % pandoc syntax highlighting
@@ -68,11 +68,18 @@
 % title / author / date
 \title{Global Health Research}
 \author{Eric P. Green}
-\date{2021-09-01}
+\date{2021-10-13}
 
 \usepackage{booktabs}
 \usepackage{mparhack} % https://tex.stackexchange.com/a/236380/30017
 \usepackage{parskip}
+
+% colors
+
+\definecolor{ghr-blue}{cmyk}{0.846, 0.234, 0.00, 0.212}
+\definecolor{ghr-orange}{cmyk}{0.0, 0.37, 0.757, 0.098}
+
+\hypersetup{colorlinks,linkcolor=,urlcolor=ghr-orange}
 
 % citations
 
@@ -80,6 +87,18 @@
 \setcitestyle{super}
 \renewcommand*{\citep}[1]{{\cite{#1}}}
 \renewcommand*{\citet}[1]{{\cite{#1}}}
+
+\usepackage[nottoc]{tocbibind}
+
+%\renewcommand{\bibsection}{\chapter{References}}
+
+% icons
+
+\usepackage{fontawesome5}
+
+% break with tufte on subsubsections
+
+\let\subsubsection\subsection
 
 % fonts
 
@@ -119,33 +138,46 @@
 \colorlet{rulecolor}{Gainsboro!40!Lavender}
 \usepackage{lipsum}
 
+\titleclass{\part}{top}
+\titleformat{\part}[display]
+  {\huge\bfseries\sffamily\centering}{\partname~\thepart}{0pt}{}
+\titlespacing*{\part}{0pt}{40pt}{40pt}
+
 \titleformat{\chapter}[display]
 {\filcenter}{\mbox{}\xrfill[0.4ex]{3pt}[rulecolor]\bfseries\sffamily{\large\enspace\chaptername\space\thechapter}\enspace\xrfill[0.4ex]{3pt}[rulecolor]\mbox{}}{0.3ex} {{\color{rulecolor}\titlerule[1pt]}\vskip3ex\huge\bfseries\sffamily}[\medskip{\color{rulecolor}\titlerule[1pt]}]
 
 \usepackage{titling}
 
-\pretitle{\begin{flushleft}\huge\bfseries}
+\pretitle{\begin{flushleft}\huge\bfseries\sffamily}
 \posttitle{\par\end{flushleft}}
 
-\preauthor{\begin{flushleft}\Large\bfseries}
+\preauthor{\begin{flushleft}\Large\bfseries\sffamily}
 \postauthor{\par\end{flushleft}}
 
-\predate{\begin{flushleft}\large\mdseries}
+\predate{\begin{flushleft}\large\mdseries\sffamily}
 \postdate{\par\end{flushleft}}
 
 \titleformat*{\section}{\LARGE\bfseries\sffamily}
 \titleformat*{\subsection}{\Large\bfseries\sffamily}
 \usepackage[svgnames]{xcolor}
 
+\let\cleardoublepage\clearpage
+
 % table of contents
 
 \usepackage{titletoc}
 
 \contentsmargin[1cm]{0cm}
-\titlecontents{chapter}[0em]{\vskip12pt\Large\bfseries\sffamily}
+
+\titlecontents{part}[-1.9em]{\vskip6pt\LARGE\bfseries\sffamily}
+{\thecontentslabel\enspace}
+{\hspace{.5em}}
+{ \hfill\contentspage}[\vskip 0pt]
+
+\titlecontents{chapter}[0em]{\medskip\Large\bfseries\sffamily}
 {\thecontentslabel\enspace}
 {\hspace{1.05em}}
-{ \hfill\contentspage}[\vskip 6pt]
+{ \hfill\contentspage}[\vskip 4pt]
 
 \titlecontents{section}[1em]{\mdseries\sffamily}
 {\thecontentslabel\enspace}
@@ -163,9 +195,51 @@
 % margins
 
 % The default minimum amount of space between \marginnotes is 10 pt.
-%\setlength\marginparpush{10pt}
+\setlength\marginparpush{15pt}
 
 \AtBeginEnvironment{marginfigure}{\linespread{0.5}}
+\AtBeginEnvironment{marginnote}{\linespread{0.5}}
+
+\makeatletter
+\renewcommand{\footnotelayout}{\@tufte@sidenote@font\@tufte@sidenote@justification\linespread{0.5}}
+\makeatother
+
+
+% https://tex.stackexchange.com/a/614005/30017
+\makeatletter
+\renewcommand\marginnote[2][0pt]{%
+    \ifthenelse{\boolean{@tufte@loadnatbib}}{%
+        \let\cite\@tufte@infootnote@cite%   use the in-sidenote \cite command
+    }{}%
+    \gdef\@tufte@citations{}%           clear out any old citations
+    \marginpar{\setstretch{0.5}\hbox{}\vspace*{#1}\@tufte@marginnote@font\@tufte@marginnote@justification\@tufte@margin@par\vspace*{-1\baselineskip}\noindent #2}%
+    \@tufte@print@citations%            print any citations
+    \ifthenelse{\boolean{@tufte@loadnatbib}}{%
+        \let\cite\@tufte@normal@cite%       go back to using normal in-text \cite command
+    }{}%
+}
+\makeatother
+
+% quote
+
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{newquote}[1][]{%
+    colback=black!5,
+    colframe=black!5,
+    notitle,
+    sharp corners,
+    borderline west={2pt}{0pt}{ghr-blue!80!black},
+    enhanced,
+    breakable,
+    }
+
+\renewcommand{\quote}{\newquote}
+\renewcommand{\endquote}{\endnewquote}
+
+
+% margin note
+
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -188,7 +262,7 @@
 
 
 {
-\setcounter{tocdepth}{0}
+\setcounter{tocdepth}{1}
 \tableofcontents
 }
 
@@ -196,25 +270,20 @@
 \chapter*{Preface}\label{preface}}
 \addcontentsline{toc}{chapter}{Preface}
 
-This book will introduce you to research designs and methods in global health. I wrote this text for undergraduate and graduate students taking my \href{http://www.globalhealthresearch.co/}{introductory course at Duke University}. Therefore, it shares the two central aims of my course: to make you a better consumer of health research, and to help you design your first global health study.
-
-Something about global health. \citet{white:2017} have ideas.
-
-Part I begins with an introduction to global health research and teaches you how to identify research problems, search the literature, and practice critical appraisal. In Module 2, you'll learn how to ask evidence-based research questions, create study aims, integrate theory, and specify important constructs, outcomes, and indicators. Module 3 is all about inference: statistical inference, causal inference, and generalizability.
-
-We'll turn to research designs in Module 4. In global health, we are often interested in knowing what treatments, programs, interventions, and policies ``work'' and why. To answer questions of impact, researchers sometimes design randomized controlled trials. Randomization is not always possible or advisable, however, and researchers must build a causal argument using non-experimental designs. We'll consider the strengths and limitations of research designs most commonly used in the behavioral and social sciences, public health, and medicine.
-
-Module 5 will help you fill in the remaining details for a Method section. In particular, you'll learn about data collection procedures and planning for data analysis. Module 6 concludes with a discussion of how to practice good science and make an impact with your work.
-
-One limitation of this book is it does not teach statistics. Statistical concepts are discussed throughout but not in great detail. Because statistical analysis is an intrinsic part of the study design stage, I recommend downloading a copy of \href{https://www.openintro.org/stat/}{\emph{OpenIntro Statistics}} and reading it alongside this book.
-
-Visit \href{http://themethodsection.com/}{themethodsection.com} for additional materials.
+Add
 
 \hypertarget{introduction}{%
 \chapter*{Introduction}\label{introduction}}
 \addcontentsline{toc}{chapter}{Introduction}
 
-Consider replacing
+Rewriting to focus on the importance of defending and communicating science, open science, trust.
+
+\hypertarget{part-start-with-a-team-and-a-question}{%
+\part{START WITH A TEAM AND A QUESTION}\label{part-start-with-a-team-and-a-question}}
+
+A clearly stated research question and a strong team motivated to get answers are the building blocks of success in global health research. The same could probably be said about most research domains, but I'll argue that meaningful and effective collaborations are uniquely essential to global health. They're so important that I've chosen to slot the chapter on collaborations \emph{ahead of} the chapter on research questions. I did this to emphasize an ideal order of operations that starts with team formation before proceeding to collaborative framing of the research problem and question.
+
+Before discussing collaborations, however, we need to establish a shared understanding of what we mean by `global health research'. That's where we'll start.
 
 \hypertarget{ghr}{%
 \chapter{Global Health Research}\label{ghr}}
@@ -222,72 +291,560 @@ Consider replacing
 \hypertarget{what-is-global-health}{%
 \section{What is Global Health?}\label{what-is-global-health}}
 
-\emph{New York County Courthouse, circa 2009}
+\emph{New York County Courthouse, Lower Manhattan, New York City, circa 2009}
 
 \textbf{Judge presiding over jury selection:} And what do you do, Mr.~Green?
 
-\textbf{Me:} I do research in global health.
+\textbf{Me:} Global health research.
 
 \textbf{Judge:}
 
-\textbf{Me:} Access to mental health services, things like that.
+\textbf{Me:} I study access to mental health services.
 
 \textbf{Judge:} So health policy then?
 
-\textbf{Me:} No, studies on interventions to expand access to care.
+\textbf{Me:} No, mostly intervention research.
 
-\textbf{Judge}: All around the globe.
+\textbf{Judge}: Globally.
 
-\textbf{Me:} No, I don't work globally.
+\textbf{Me:} No, not quite.
 
 \textbf{Judge:} What is global health, Mr.~Green?
 
 \textbf{Me:} Well, you see\ldots{}\emph{rambles}\ldots{}
 
-\textbf{Judge:} Thank you. Mr.~Green, you are dismissed.
+\textbf{Judge:} Thank you, Mr.~Green. You are dismissed.
 
-In fairness to the Honorable Judge, it's not clear what I should have expected her to imagine when I said ``global health''. Everyone understands medicine, and most folks probably have a good sense of what we mean by public health. But what is global health?
+\vspace{2cm}
 
-Maybe I would have made the cut had I said, ``\textbf{global health is the study and practice of improving health and achieving equity in health for all people worldwide}''. This is how \citet{koplan:2009} defined global health in a \emph{Lancet} article published a few months after my court appearance. They also offered this longer version:
+I've had this conversation hundreds of times since that court appearance. Now when asked, I say something like, ``global health takes a global perspective on public health problems,'' drawing inspiration from Skolnik.\citep{skolnik2019} In the wake of the pandemic, I find that people nod along at this framing. It makes sense to them. Thanks, COVID-19!
+
+Go any deeper below the ontological surface, however, and you'll find that there is not a consensus definition of global health.\citep{merson:2018} I like this one by Koplan et al.\citep{koplan:2009}:
 
 \begin{quote}
-\textbf{Global health} emphasises transnational health issues, determinants, and solutions; involves many disciplines within and beyond the health sciences and promotes interdisciplinary collaboration; and is a synthesis of population-based prevention with individual-level clinical care.
+\textbf{Global health is an area for study, research, and practice that places a priority on improving health and achieving equity in health for all people worldwide.} Global health emphasizes transnational health issues, determinants, and solutions; involves many disciplines within and beyond the health sciences and promotes interdisciplinary collaboration; and is a synthesis of population-based prevention with individual-level clinical care.
 \end{quote}
 
+Take note of two key elements of their definition:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  it includes scholars, researchers, and practitioners working across disciplinary boundaries; and
+\item
+  it goes beyond simply improving health to include the goal of achieving health equity.
+\end{enumerate}
+
+To expand on the first point, this definition reflects the reality that global health challenges are complex, so the search for solutions must span disciplines. In the study of malaria, for example, you can read about the spread of the disease (epidemiology), the impact of illness on future productivity (economics), the merits of free or subsidized bed nets (public policy), mosquito habitats (ecology), the efficacy of vaccines to prevent the disease (medicine and statistics), rapid diagnostic tests (biomedical engineering), and the adoption and use of bed nets (psychology), just to name a few areas of inquiry.
+
+The second point is that global health is action-oriented, seeking to achieve health equity for all people worldwide. The WHO\citep{who:2021} defines \textbf{equity} as follows:
+
+\begin{quote}
+Equity is the absence of unfair, avoidable or remediable differences among groups of people, whether those groups are defined socially, economically, demographically, or geographically or by other dimensions of inequality (e.g.~sex, gender, ethnicity, disability, or sexual orientation). Health is a fundamental human right. Health equity is achieved when everyone can attain their full potential for health and well-being.
+\end{quote}
+
+Put another way, health inequities are unfair and unjust differences in healthcare access or health outcomes that can be prevented or fixed. Health inequities are structural, often resulting from decisions we make about who gets access to resources.
+
+The consequence of inequity is often inequality. For instance, inequitable access to healthcare services can lead to unequal health outcomes---\textbf{health inequalities}---between groups. Differences in health status are also referred to as \textbf{health disparities}.
+
+The COVID-19 pandemic has given us many examples of health inequities and disparities. For instance, data compiled by the website Health Inequities Tracker shows that through at least August 2021, Hispanics and Latinos were over-represented in COVID-19 hospitalizations, while non-Hispanic Whites were substantially under-represented.\citep{het}
+
+\begin{figure*}
+\includegraphics{ghr_files/figure-latex/disparity-1} \end{figure*}
+
+Macias Gil et al.~point to several factors that might help to explain why Latinos and Hispanics were disproportionately affected by COVID-19.\citep{macias:2020}
+
+\begin{itemize}
+\tightlist
+\item
+  Higher rates of co-morbid health conditions
+\item
+  More likely to be underinsured or uninsured
+\item
+  Undocumented immigration status
+\item
+  Language barriers to accessing services
+\item
+  Overrepresentation in ``essential'' jobs where working from home was not possible
+\item
+  Greater financial pressures to show up to work, even if unwell or potentially exposed to the virus
+\item
+  More likely to live in multigenerational homes where transmission was more likely
+\end{itemize}
+
+Several of these underlying factors, such as undocumented immigration status, fall into the category of \textbf{social determinants of health}:\citep{who:sd}
+
+\begin{quote}
+The circumstances in which people are born, grow up, live, work and age, and the systems put in place to deal with illness.
+\end{quote}
+
+The disease COVID-19 is \emph{directly} caused by infection with the novel coronavirus, SARS-CoV-2, but who gets infected, hospitalized, and dies is not completely random. Infectious diseases are social affairs, and some people are more vulnerable because of their context. To prevent future pandemics, we must gain a deeper understanding of the interaction between social determinants of health and disease risk and, most importantly, work to fix the underlying societal inequities that make certain groups more vulnerable.
+
+Another example of a COVID-19 inequity is global access to vaccines. By October 2021, nearly half of the world's population had received at least one dose of a COVID-19 vaccine, but the first 6.5 billion doses mostly went into the arms of citizens of wealthy countries. Less than 3 percent of people in low-income countries had received even one dose. While true that many low-income countries escaped the worst of the pandemic's first few waves, the glacial roll out of vaccines globally---what some have decried as a vaccine apartheid---might leave many nations vulnerable to deadly new variants and their citizens banned from certain travel destinations.
+
 \begin{marginfigure}
-``Determinants'' of health/illness is one of those terms that you'll
-come across a lot in global health. It refers to the things that
-contribute to our health and wellbeing.
-\href{http://tinyurl.com/zvdxezv}{Pretty much everything}. Ironically,
-despite sounding so \emph{deterministic}, the study of determinants is
-mostly \emph{probabilistic}. A social determinant like poverty is
-generally associated with worse health outcomes, but not everyone living
-in poverty has the same experience.
+\includegraphics[width=1\linewidth]{images/covid-vaccination-doses-per-capita} \end{marginfigure}
+
+\hypertarget{what-is-research}{%
+\section{What is Research?}\label{what-is-research}}
+
+\marginnote{\faIcon{book-reader} This particular definition comes from Title 45 of the United States Code of Federal Regulations, Part 46, Subpart A, also known as the Common Rule. Read more at \href{https://tinyurl.com/af98yyak}{\footnotesize\texttt{tinyurl.com/af98yyak}}}
+
+Definitions of \textbf{research} typically include two key elements: research is (i) a \textbf{systematic investigation} (ii) designed to develop or contribute to \textbf{generalizable knowledge}.
+
+By generalizable knowledge, we mean that the investigation intends to advance our scientific understanding. One way that a study can advance scientific understanding is by applying the results from a limited investigation to a larger group of people not involved in the study.
+
+For instance, you might interview parents of young children about their use (or lack thereof) of mosquito nets. You intend to analyze the transcripts and develop new ideas about the barriers to bed net use that you hope to publish in an academic journal. Other scholars will read this work use it to develop new theories of health behavior and create new interventions that promote bed net use. This is research.
+
+But what if a journalist decides to write a feature article about the burden of malaria and interviews a few of the \textbf{same} parents. Is this research?
+
+No.~For one, the journalist might not follow a systematic method for deciding which parents to approach, how to conduct the interviews, or how to synthesize what they learn. Second, the journalist has a different objective. Whereas you wanted to systematically advance our understanding of barriers to bed net use---insights that might apply to different parents in other settings---the journalist intends to inform the public by telling the stories of a few specific parents.
+
+Another way that a study can advance scientific understanding is by developing and testing scientific methods and procedures. For instance, a research team might plan a small pilot test to collect initial data that will inform the design of a larger study. In most cases, we'd consider these pre-study activities to be research---even if the team does not intend to publish the results---because the pilot study is part of the knowledge generation process.
+
+But here again, intent matters. An example of a systematic investigation NOT intended to produce generalizable insights might be a company's A/B test of two different email marketing campaigns. Acme Corp.~randomly assigns a small percentage of its users to receive email campaign A vs campaign B and tracks which campaign generates the most clicks or sales. The company's objective is to determine which campaign optimizes their marketing spend for conversions, not to say something more general about human perception and behavior. Therefore, it's not considered research.
+
+As we'll discuss in a later chapter, it's always a good idea to consult with an Institutional Review Board to determine if your proposed work is considered research (and if it is, whether it falls under policies requiring ethical review).
+
+\hypertarget{what-is-science}{%
+\section{What is Science?}\label{what-is-science}}
+
+Whether you are designing a study that relies on qualitative methods, quantitative methods, or a blend of both, there are
+
+There are three main characteristics of scientific research that apply to most of global health:\citep{king:1994}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  the goal is inference;
+\item
+  the procedures are public; and
+\item
+  the conclusions are uncertain.
+\end{enumerate}
+
+\hypertarget{the-goal-is-inference}{%
+\subsection*{THE GOAL IS INFERENCE}\label{the-goal-is-inference}}
+\addcontentsline{toc}{subsection}{THE GOAL IS INFERENCE}
+
+Science is more than observation. To create generalizable knowledge, you
+
+It's data + inference.
+
+\textbf{Inference} is using the data you have to make conclusions about
+
+making conclusions about some unobserved or unmeasured phenomenon based on direct observations of the world. What is known is used to infer something about things that are not known. This process can be deductive or inductive.
+
+In \textbf{deductive} reasoning, we start from general theories and make hypotheses. Then we collect data and make conclusions based on the data. \textbf{Inductive} reasoning flows the other direction, from specific observations to the generation of hypotheses and theories. To say that quantitative research is deductive and qualitative research is inductive is not quite right, but it's often true.
+
+The point to take away about inference is that, regardless of the approach to reasoning, the goal of scientific research is to use what we observe to make conclusions about what we do not or cannot observe directly. This is sometimes referred to as \textbf{empiricism}, and our systematic observations are \textbf{empirical evidence}. Empiricism is at the heart of scientific research.
+
+\hypertarget{the-procedures-are-public}{%
+\subsection*{THE PROCEDURES ARE PUBLIC}\label{the-procedures-are-public}}
+\addcontentsline{toc}{subsection}{THE PROCEDURES ARE PUBLIC}
+
+\begin{marginfigure}
+\includegraphics{images/pancakes2} \caption[A poorly documented Method section]{A poorly documented Method section. Source: [http://tinyurl.com/yxtabza3](http://tinyurl.com/yxtabza3)}\label{fig:pancakes}
 \end{marginfigure}
 
-This definition reflects the reality that the determinants of ill health and inequality are complex, so the search for solutions must span multiple disciplines. In the study of malaria, for example, you can read about the spread of the disease (epidemiology), the impact of illness on future productivity (economics), the merits of free or subsidized bed nets (public policy), mosquito habitats (ecology), the efficacy of vaccines to prevent the disease (medicine and statistics), rapid diagnostic tests (biomedical engineering), and the adoption and use of bed nets (psychology), just to name a few areas of inquiry.
+Scientific research uses public methods that can be examined and replicated. A Method section in a scientific paper is like a recipe. If you have ever tried to follow a confusing recipe, you can appreciate the importance of good documentation. Your study's recipe must be clear (well written), thorough (no ``dash'' of this or that), and shared publicly (not a secret passed down to lab members).
 
-Therefore, we say that global health research is multidisciplinary and interdisciplinary. It is \textbf{multidisciplinary} in the sense that no one field can solve the great global health challenges of our time, and \textbf{interdisciplinary} because collaboration is core to progress \citep{merson:2011}.
+\textbf{Replication} is a core principle of scientific research. No one study rules the day. If the results of a study are robust, another research group should be able to follow your recipe and replicate the findings. When such findings are replicated, we all have more confidence in the results.
+
+In later chapters we'll learn strategies for writing a good Method section (and appendices!) and discuss why replications are actually rare in practice---and why they can be so controversial.
+
+\hypertarget{the-conclusions-are-uncertain}{%
+\subsection*{THE CONCLUSIONS ARE UNCERTAIN}\label{the-conclusions-are-uncertain}}
+\addcontentsline{toc}{subsection}{THE CONCLUSIONS ARE UNCERTAIN}
+
+Every method has limitations, every measurement has error, and every model is wrong to some extent. Take the estimation of maternal mortality rates as an example. \citet{hogan:2010} published maternal mortality estimates for 181 countries. Some countries, such as the United States, have vast amounts of data in vital registries that attempt to track all births and deaths. It's not perfect, so we still estimate the maternal mortality rate using a statistical model (we'll discuss models more in a later chapter).
+
+As you can see in the left panel of Figure \ref{fig:mmr}, the United States has a very low level of maternal mortality, between about 10-20 maternal deaths for every 100,000 live child births. Compared to some countries, the US has a lot of data points for estimating the level and trend in maternal deaths, so the ``uncertainty band'' is narrow.
+
+Now take a look at Afghanistan on the right. Note that the y-axis scale is much larger in the 1000s, reflecting the fact that many more Afghan women die of causes related to pregnancy or childbirth. Next, pay attention to the width of the uncertainty band. It spans a range of more than 3000 deaths. Compare this to a range of fewer than 5 deaths in the US! This is because there are very few data points available to estimate the ``true'' value in Afghanistan, and these individual data points can differ by more than 1000 deaths. We don't know much about maternal mortality in Afghanistan, but the blue line is our best guess.
+
+The takeaway message is that there is uncertainty in everything. No single estimate can be considered ``The Truth.'' Instead, we must focus on the origin of estimates and recognize the limitations of what we know or what is being reported.
+
+\hypertarget{what-constitutes-global-health-research}{%
+\section{What Constitutes Global Health Research?}\label{what-constitutes-global-health-research}}
+
+Global health research brings together scholars and practitioners from many different disciplines to tackle big challenges. Therefore, the methods of these disciplines \emph{are} the methods of global health research. We can organize the landscape as shown in Figure \ref{fig:basicapplied}.
+
+\begin{figure*}
+\includegraphics{images/basicapplied} \caption[A research taxonomy]{A research taxonomy}\label{fig:basicapplied}
+\end{figure*}
+
+Research is divided into two main categories: basic and applied. Overlapping with applied research is an area of work called ``monitoring and evaluation'', or M\&E. Let's examine what constitutes research before turning to M\&E.
+
+\hypertarget{basic-research}{%
+\subsection*{BASIC RESEARCH}\label{basic-research}}
+\addcontentsline{toc}{subsection}{BASIC RESEARCH}
+
+\textbf{Basic research}---also known as ``pure'' or ``blue skies'' research---is the pursuit of fundamental knowledge of phenomena. For example, scientists conduct laboratory experiments to understand the parasitic life cycle and how parasites interact with humans at different stages. Another example is the scientific investigation of the properties of cancer cells to better understand how they grow and spread.
+
+The information generated by basic science becomes the basis for applied science. It's the ``bench'' in the ``bench to bedside'' cascade of research needed to take an idea from the lab (\emph{the bench}) to a new medical treatment (\emph{delivered to the patient's bedside}).
+
+Harvard Medical School's Rachel Wilson explains this beautifully:
+
+\begin{quote}
+The new therapies of today were the prototypes of yesterday. And the prototypes of yesterday were previously just findings in laboratories, and before that they were just an idea. Unless we have new ideas, we're not going to have useful therapies. Great new therapies don't just fall like apples from a tree.
+\end{quote}
+
+\hypertarget{applied-research}{%
+\subsection*{APPLIED RESEARCH}\label{applied-research}}
+\addcontentsline{toc}{subsection}{APPLIED RESEARCH}
+
+\textbf{Applied research} focuses on specific problems or real-world applications. Whereas the basic scientist might toil away in the lab to understand how cellular enzymes function without a specific clinical application in mind---discovering this function is the end goal for this scientist---the applied researcher will take this knowledge of enzymes to develop new therapies that could treat cancer.
+
+In the world of malaria research, an applied research question might be, ``How can we increase the coverage and use of bed nets that prevent malaria transmission?'' The basic science, such as the behavioral habits of the mosquito and the transmission conditions for malaria, have already been characterized by entomologists and epidemiologists.
+
+\hypertarget{clinical-research}{%
+\subsubsection*{Clinical Research}\label{clinical-research}}
+\addcontentsline{toc}{subsubsection}{Clinical Research}
+
+Applied science takes many different forms, including \href{https://en.wikipedia.org/wiki/Clinical_research}{\textbf{clinical research}}. Clinical research is a broad field that encompasses patient-oriented research, epidemiological and behavioral studies, outcomes research, and health services research. Basic research provides the foundation for all clinical research.
+
+\begin{figure*}
+\includegraphics{images/clinicaltrials} \caption[Pipeline from basic research to FDA approval]{Pipeline from basic research to FDA approval. Source: [phrma.org/advocacy/research-development/clinical-trials](http://www.phrma.org/advocacy/research-development/clinical-trials).}\label{fig:ctrial}
+\end{figure*}
+
+One type of clinical research is a clinical trial. Drugs and vaccines have to pass through different phases of clinical trials before regulatory bodies, such as the Federal Food and Drug Administration (FDA), will approve their use with humans:
+
+Phase
+
+Enrollment
+
+Goal
+
+\textbf{Preclinical research}
+
+Are there signs that the drug candidate will have an effect in the lab?
+
+\textbf{Phase 0}
+
+\textless10
+
+What happens in the body (pharmacokinetics) when a very low dose is administered to human subjects? (optional phase)
+
+\textbf{Phase I}
+
+10s
+
+Is the drug safe? What is the best dose that balances possible effects with toxicity?
+
+\textbf{Phase II}
+
+100s
+
+When using this optimal dose, is there any effect of the drug on clinical markers or health outcomes?
+
+\textbf{Phase III}
+
+1000s
+
+What is the effect of the drug on clinical markers or health outcomes when compared to an existing treatment or placebo in a randomized evaluation? Success at this stage is required for regulatory approval in some countries.
+
+\textbf{Phase IV}
+
+Are there long-term adverse effects of the drug once it is available on the market?
+
+\hypertarget{case-study-developing-a-malaria-vaccine}{%
+\paragraph*{Case study: Developing a malaria vaccine}\label{case-study-developing-a-malaria-vaccine}}
+\addcontentsline{toc}{paragraph}{Case study: Developing a malaria vaccine}
+
+The development of a vaccine for malaria provides a good example of the life cycle of a clinical trial. In 2015, after 30 years of research, a vaccine candidate called RTS,S, or Mosquirix™, \href{http://money.cnn.com/2015/07/24/news/malaria-vaccine-bill-gates/}{made the news} for having gotten one step closer to becoming a licensed vaccine after a successful Phase III trial.
+
+\href{http://malariavaccine.org/files/UpdatedRTSS_FactSheet_21April2010.pdf}{Development of RTS,S} began in 1984 through a partnership between the pharmaceutical company GlaxoSmithKline (GSK) and the Walter Reed Army Institute of Research. In 1987, a promising vaccine candidate entered \textbf{preclinical} research. During the preclinical phase, researchers performed tests on nonhuman subjects to collect data on how well the vaccine worked (\textbf{efficacy}), how much damage it could do to an organism (\textbf{toxicity}), and how the body affected the vaccine (\textbf{pharmacokinetics}).
+
+\begin{figure}
+\includegraphics{images/rtss} \caption[RTS,S timeline]{RTS,S timeline. Source: [http://tinyurl.com/y3o2godv](http://tinyurl.com/y3o2godv).}\label{fig:rtss}
+\end{figure}
+
+Clinical research on humans began in 1992. To obtain regulatory approval, the vaccine had to complete three phases of testing. Doherty et al. \citeyearpar{doherty:1999} conducted a \textbf{Phase I} safety and immunogenicity trial with 20 adults in The Gambia in 1997. This small sample size is typical of Phase I trials, where the main objectives are usually to determine a safe dosing range and to evaluate side effects. These researchers reported that the vaccine did not have any significant toxicity but did produce the expected antibodies.
+
+Several \textbf{Phase II} studies conducted over the following decade (Phase IIa and Phase IIb) demonstrated the \textbf{efficacy} of the vaccine against several end points (or outcomes) \citep{moorthy:2009}. A Phase IIb trial began in Mozambique in 2003 with more than 2,000 children aged 1 to 4 years \citep{alonso:2004}. Each child was randomly assigned to receive 3 doses of RTS,S or a control vaccine. After 6 months, the prevalence of malaria was 37\% lower in the treatment group than in the control group. A follow-up study with 214 infants also showed partial protection from malaria \citep{aponte:2007}. This Phase II trial was an important proof-of-concept study.
+
+The final results of a large \textbf{Phase III} trial with more than 15,000 infants and young children in 7 African countries were published in \emph{The Lancet} in 2015 \citep{rts:2015}. Children who participated in the study were randomly assigned to 1 of 3 arms: (a) 3 doses of RTS,S and a booster dose at month 20, (b) 3 doses of RTS,S and a booster dose of a comparator vaccine at month 20, or (c) 4 doses of a comparator vaccine. RTS,S reduced clinical malaria cases by 28\% and 18\% among young children and infants, respectively, over a 3--4-year period. This Phase III trial achieved its goal---to show that the treatment was efficacious.
+
+On the basis of these results, the European Medicines Agency issued a ``European scientific opinion'' to help inform the decision of the WHO and African national regulatory authorities regarding their recommendation of the vaccine. If RTS,S is approved for use and eventually hits the market, researchers will likely conduct \textbf{Phase IV} trials to evaluate the vaccine's long-term effects.
+
+\hypertarget{implementation-research-and-translational-research}{%
+\subsubsection*{Implementation Research and Translational Research}\label{implementation-research-and-translational-research}}
+\addcontentsline{toc}{subsubsection}{Implementation Research and Translational Research}
+
+The research on RTS,S, will not end there, however. The vaccine may be efficacious, but that does not mean it will be easy or cost-effective to produce and deliver at a scale of millions. Studies that assess how best to get efficacious treatments to the people who need them most fall under the domain of \textbf{implementation research}.
+
+Making the jump from studies showing clinical efficacy to wide-spread adoption and population-level impact is one example of research translation. Practitioners of \textbf{translational research} point to 4 key bottlenecks:
+
+\begin{itemize}
+\tightlist
+\item
+  T1: Translation from basic science to clinical research
+\item
+  T2: Translation from early clinical trials to Phase III trials and beyond with larger patient populations
+\item
+  T3: Translation from efficacy trials (i.e., Phase III trials) to real-world effectiveness through implementation research
+\item
+  T4: Translation from evidence about delivery at scale to the adoption of new policies
+\end{itemize}
+
+\begin{figure}
+\includegraphics{images/translational} \caption[Bottlenecks in translating ideas into applications]{Bottlenecks in translating ideas into applications. Source: Medical University of South Carolina, http://bit.ly/2iq2Blv}\label{fig:translational}
+\end{figure}
+
+\hypertarget{summary}{%
+\subsubsection*{Summary}\label{summary}}
+\addcontentsline{toc}{subsubsection}{Summary}
+
+Term
+
+Definition
+
+Example
+
+\textbf{Basic research}
+
+Fundamental research in the lab to characterize and understand some entity
+
+What are the properties of this enzyme?
+
+\textbf{Pre-clinical research (applied)}
+
+Test tube/culture (in vitro) or animal (in vivo) research to prepare for clinical research with human subjects
+
+What happens to this enzyme when a particular compound is introduced?
+
+\textbf{Clinical research (applied)}
+
+Research with human subjects to determine safety and efficacy with respect to clinical markers and health outcomes
+
+When formulated into a vaccine, is this vaccine candidate safe for humans? Does it have an effect on human health?
+
+\textbf{Implementation research (applied)}
+
+Research on how interventions/treatments work under real-world conditions
+
+What is the best way to distribute the vaccine and promote wide-scale adoption to achieve the same effects as shown in controlled trials?
+
+Translational research is cross-cutting, linked to several key bottlenecks where good ideas can stall and ultimately die.
+
+\hypertarget{monitoring-and-evaluation}{%
+\subsection{MONITORING AND EVALUATION}\label{monitoring-and-evaluation}}
+
+\begin{marginfigure}
+\includegraphics{images/basicapplied} \caption[A research taxonomy, revisited]{A research taxonomy, revisited.}\label{fig:basicapplied2}
+\end{marginfigure}
+
+Another arena of applied work in global health is \textbf{monitoring and evaluation}, or M\&E.
+
+\hypertarget{evaluation}{%
+\subsubsection*{Evaluation}\label{evaluation}}
+\addcontentsline{toc}{subsubsection}{Evaluation}
+
+In the United States, program evaluation became commonplace by the end of the 1950s and grew dramatically in the 1960s as the federal government expanded and introduced new social programs. Lawmakers wanted accountability, and the evaluation of social programs took off \citep{rossi:2003}. \textbf{\emph{But is program evaluation really research?}}
+
+Methods giant \href{https://en.wikipedia.org/wiki/Donald_T._Campbell}{Donald Campbell} thought so:\citep{campbell:1969}
+
+\begin{quote}
+The United States and other modern nations should be ready for an experimental approach to social reform, an approach in which we try out new programs designed to cure specific problems, in which we learn whether or not these programs are effective, and in which we retain, imitate, modify or discard them on the basis of their effectiveness on the multiple imperfect criteria available.
+\end{quote}
+
+But not everyone agrees. Some have argued that program evaluation is really designed for program implementers and funders, and that the messy nature of program implementation requires a loosening of research standards \citep{cronbach:1982}. We should simply evaluate the evidence, or ``learn what we can.''
+
+In their introductory text on evaluation, Rossi et al. \citeyearpar{rossi:2003} strike a balance in views on this question of whether program evaluation is research. Their answer is perhaps a bit unsatisfying but is arguably true nevertheless: \emph{It depends}.
+
+Program evaluations should be as rigorous as logistics, ethics, politics, and resources permit---and no less. Surely a lower bound in terms of quality or what is worthwhile exists, but the line is so context dependent that a simple rule is best: ``Don't go beyond the data.'' Every organization wants to claim ``impact,'' but not every evaluation can be based on the design and implementation.
+
+\hypertarget{impact-evaluation}{%
+\paragraph*{Impact evaluation}\label{impact-evaluation}}
+\addcontentsline{toc}{paragraph}{Impact evaluation}
+
+Revisiting the research taxonomy presented earlier, we see that there is overlap between evaluation (orange) and research (blue), a nod to Campbell's view that program evaluation can be considered research in many cases. Furthermore, we see that something called ``impact evaluation'' is a subset of evaluation.
+
+In an \textbf{impact evaluation}, the goal is to infer that some program---or some treatment, intervention, or policy---had an effect on some outcome. As we'll discuss in later chapters, there are several research designs that will generate evidence of ``impact''. One design in particular, the randomized controlled trial common to Phase II and III clinical trials, is an important type of impact evaluation. Not all impact evaluations are RCTs, but all RCTs are impact evaluations.
+
+\hypertarget{monitoring}{%
+\subsubsection*{Monitoring}\label{monitoring}}
+\addcontentsline{toc}{subsubsection}{Monitoring}
+
+Program monitoring is concerned with the implementation of programs, policies, or interventions. How are resources being used? Is the program being delivered as intended (or \emph{with fidelity})? How many people participate, and does the program reach the intended targets? These are all program-monitoring questions.
+
+Accurate monitoring is essential for reporting data to funders, but it is also essential for all good evaluations. The reason is simple: If a program fails---that is, has no impact---the next question is why? Did the program fail because the idea or theory behind the program was wrong (\textbf{theory failure})? Or was the implementation of the program so troubled that there was never a chance for success (i.e., \textbf{implementation failure})? Every trial should include ongoing monitoring or a formal process evaluation to assess the impact of the program on a continual basis.
+
+\hypertarget{who-funds-global-health-research}{%
+\section{Who Funds Global Health Research?}\label{who-funds-global-health-research}}
+
+Billions of dollars are spent on global health research every year. This funding comes from public institutions such as the National Institutes of Health (NIH) in the United States and private philanthropy organizations such as the Bill and Melinda Gates Foundation.
+
+In 2015, the international community disbursed \$36.4 billion in development assistance for health, down from a peak of \$38 billion in 2013 \citep{ihme:2016}. Although Figure \ref{fig:funding} does not present total research dollars contributed, per se, it does show the sources of global health financing, the channels through which they flow, and the areas on which they focus (see \href{http://vizhub.healthdata.org/fgh/}{here} for an interactive version).
+
+\begin{figure*}
+\includegraphics{images/ihmefunding} \caption[Flows of global health financing]{Flows of global health financing. Abbreviations: BMGF, Bill \& Melinda Gates Foundation; SWAps \& HSS, sector-wide approaches and health-sector support; Gavi, the Vaccine Alliance. Source: Institute for Health Metrics and Evaluation, http://vizhub.healthdata.org/fgh/}\label{fig:funding}
+\end{figure*}
+
+The United States Government contributed one-third of all development assistance for health in 2015 (\$13 billion). More than half of USG funding was directed to HIV/AIDS, malaria, tuberculosis, and other infectious diseases. Noncommunicable diseases received \textless1\% of resources, despite accounting for 7 of the 10 leading causes of death globally (Figure \ref{fig:cod}).
+
+\begin{figure}
+\includegraphics{images/cod} \caption[Global deaths per 100,000]{Global deaths per 100,000. Abbreviations: COPD, chronic obstructive pulmonary disease. Source: Institute for Health Metrics and Evaluation, http://vizhub.healthdata.org/gbd-compare/}\label{fig:cod}
+\end{figure}
+
+\hypertarget{who-produces-global-health-research}{%
+\section{Who Produces Global Health Research?}\label{who-produces-global-health-research}}
+
+Academic centers around the world, like the \href{https://globalhealth.duke.edu/}{Duke Global Health Institute}, are major contributors to global health research. Public and private donors like the USG, the Bill and Melinda Gates Foundation, and the World Bank make grants to university-affiliated faculty members who partner with colleagues inside and outside governments to plan and conduct research. Donors also channel research support to nonprofit research organizations such as \href{https://www.fhi360.org/}{FHI 360} and \href{https://www.rti.org/}{RTI International}, who work in a similar fashion.
+
+Interesting hybrid models include the Abdul Latif Jameel Poverty Action Lab (JPAL) and Innovations for Poverty Action (IPA). \href{http://www.povertyactionlab.org/}{JPAL} is a global network of university-affiliated professors from more than 50 universities that use randomized evaluations (i.e., experiments) to answer policy questions related to poverty alleviation. The JPAL website contains excellent resources regarding the methods used in randomized evaluations, as well as links to published studies and policy briefs. \href{http://www.poverty-action.org/}{IPA} is a sister organization that is also a leader in the use of randomized evaluations to study important policy questions about global poverty.
+
+\hypertarget{where-is-global-health-research-published}{%
+\section{Where is Global Health Research Published?}\label{where-is-global-health-research-published}}
+
+Global health research is published in medical journals (e.g., \href{http://www.thelancet.com/}{\emph{The Lancet}} and \href{http://jamanetwork.com/journals/jama}{\emph{JAMA}}), general science journals (e.g., \href{http://science.sciencemag.org/}{\emph{Science}} and \href{http://journals.plos.org/plosone/}{\emph{PLOS ONE}}), discipline-specific journals (e.g., \href{http://www.jimmunol.org/content/198/1/184.short}{\emph{The Journal of Immunology}} and \href{http://journals.lww.com/epidem/pages/default.aspx}{\emph{Epidemiology}}), and disease-specific journals (e.g., \href{http://journals.lww.com/aidsonline/Pages/default.aspx}{\emph{AIDS}} and \href{https://malariajournal.biomedcentral.com/}{\emph{Malaria Journal}}). Journals specializing in global health include \href{http://www.thelancet.com/journals/langlo/latestcontent}{\emph{The Lancet Global Health}}, \href{http://gh.bmj.com/}{\emph{BMJ Global Health}}, \href{http://www.tandfonline.com/toc/rgph20/current}{\emph{Global Public Health}}, and \href{http://www.ghspjournal.org/}{\emph{Global Health: Science and Practice}}.
+
+\hypertarget{the-takeaway}{%
+\section{The Takeaway}\label{the-takeaway}}
+
+Research is defined as a systematic investigation whose goal is to develop or contribute to generalizable knowledge. As global health is the study and practice of improving health and achieving equity in health, \textbf{global health research} includes all systematic efforts to create generalizable knowledge of how we can improve health and achieve equity in health for everyone, everywhere.
+
+Given the complexity of our global health challenges, global health research is multidisciplinary and interdisciplinary. This means that, as a budding global health researcher, you will likely collaborate on teams with colleagues from many different fields. Each discipline has its own methodological preferences and core approaches, but we all operate in the same research landscape that is divided into basic and applied research. Much of the literature in global health focuses on our applied challenges, so you will read a lot about clinical research and trials, translational research, implementation research, and M\&E (monitoring and evaluation).
+
+So no matter what discipline you call home, or what stage of research you find most interesting, you can make great contributions to our collective efforts to improve health and achieve equity in health.
+
+\hypertarget{collaborations}{%
+\chapter{Build Collaborations}\label{collaborations}}
+
+\hypertarget{ideas}{%
+\chapter{Develop Research Ideas and Questions}\label{ideas}}
+
+\hypertarget{part-get-to-know-the-scientific-literature}{%
+\part{GET TO KNOW THE SCIENTIFIC LITERATURE}\label{part-get-to-know-the-scientific-literature}}
+
+\hypertarget{searching}{%
+\chapter{Search the Literature}\label{searching}}
+
+\hypertarget{reading}{%
+\chapter{Read Scientific Articles}\label{reading}}
+
+\hypertarget{reviews}{%
+\chapter{Use Systematic Reviews and Meta-Analyses}\label{reviews}}
+
+\hypertarget{part-consider-threats-to-validity}{%
+\part{CONSIDER THREATS TO VALIDITY}\label{part-consider-threats-to-validity}}
+
+Insert intro to part.
+
+\hypertarget{statinfer}{%
+\chapter{Statistical Inference}\label{statinfer}}
+
+\hypertarget{causalinfer}{%
+\chapter{Causal Inference}\label{causalinfer}}
+
+\hypertarget{external}{%
+\chapter{External Validity and Generalizability}\label{external}}
+
+\hypertarget{construct}{%
+\chapter{Construct Validity}\label{construct}}
+
+\hypertarget{part-select-a-research-design}{%
+\part{SELECT A RESEARCH DESIGN}\label{part-select-a-research-design}}
+
+\hypertarget{experiments}{%
+\chapter{Randomized Experiments}\label{experiments}}
+
+\hypertarget{ivnatural}{%
+\chapter{Instrumental Variables and Natural Experiments}\label{ivnatural}}
+
+\hypertarget{prepost}{%
+\chapter{Single-Group Pre-Post}\label{prepost}}
+
+\hypertarget{postpost}{%
+\chapter{Multiple Group Post-Test Only}\label{postpost}}
+
+\hypertarget{did}{%
+\chapter{Difference-in-Differences}\label{did}}
+
+\hypertarget{its}{%
+\chapter{Interrupted Time Series}\label{its}}
+
+\hypertarget{rd}{%
+\chapter{Regression Discontinuity}\label{rd}}
+
+\hypertarget{qualdesigns}{%
+\chapter{Qualitative Research Designs}\label{qualdesigns}}
+
+\hypertarget{case}{%
+\chapter{Case Reports}\label{case}}
+
+\hypertarget{xsectional}{%
+\chapter{Cross-Sectional and Correlational Studies}\label{xsectional}}
+
+\hypertarget{casecontrol}{%
+\chapter{Case-Control Studies}\label{casecontrol}}
+
+\hypertarget{cohort}{%
+\chapter{Cohort Studies}\label{cohort}}
+
+\hypertarget{accuracy}{%
+\chapter{Diagnostic Accuracy Studies}\label{accuracy}}
+
+\hypertarget{prediction}{%
+\chapter{Medical Records and Clinical Prediction Modeling}\label{prediction}}
+
+\hypertarget{implementation}{%
+\chapter{Implementation Research}\label{implementation}}
+
+\hypertarget{sampling}{%
+\chapter{Sampling and Participant Recruitment}\label{sampling}}
+
+\hypertarget{part-write-the-method-section}{%
+\part{WRITE THE METHOD SECTION}\label{part-write-the-method-section}}
+
+\hypertarget{surveys}{%
+\chapter{Surveys}\label{surveys}}
+
+\hypertarget{nonsurvey}{%
+\chapter{Non-Survey Instruments}\label{nonsurvey}}
+
+\hypertarget{qualdata}{%
+\chapter{Qualitative Data Collection}\label{qualdata}}
+
+\hypertarget{secondary}{%
+\chapter{Secondary Data Analysis}\label{secondary}}
+
+\hypertarget{pilot}{%
+\chapter{Pilot Trials and Preliminary Studies}\label{pilot}}
+
+\hypertarget{power}{%
+\chapter{Power and Sample Size}\label{power}}
+
+\hypertarget{ethics}{%
+\chapter{Research Ethics}\label{ethics}}
+
+\hypertarget{part-conduct-the-study}{%
+\part{CONDUCT THE STUDY}\label{part-conduct-the-study}}
+
+\hypertarget{openscience}{%
+\chapter{Practice Open Science}\label{openscience}}
+
+\hypertarget{fieldwork}{%
+\chapter{Fieldwork}\label{fieldwork}}
+
+\hypertarget{data}{%
+\chapter{Data Processing}\label{data}}
+
+\hypertarget{part-make-an-impact}{%
+\part{MAKE AN IMPACT}\label{part-make-an-impact}}
+
+\hypertarget{dissemination}{%
+\chapter{Publish and Disseminate Your Work}\label{dissemination}}
+
+\hypertarget{policy}{%
+\chapter{Impact Policy and Practice}\label{policy}}
 
 \hypertarget{acknowledgements}{%
 \chapter*{Acknowledgements}\label{acknowledgements}}
 \addcontentsline{toc}{chapter}{Acknowledgements}
-
-If you find something you like in this book, I can probably trace its origin to one of the many people who helped me pull it all together. I want to thank them for this good work and absolve them from responsibility for any errors.
-
-I'll start with my students. I've had the privilege of working alongside many fantastic graduate student teaching assistants over the years, including Kaitlin Saxton, Kathleen Perry, Olivia Fletcher, Jenae Logan, Hiwot Zewdie, Siddhesh Zadey, Anfal Adbelgadir, Madeline Wilkerson, and Lori Babb. Each one of them helped me to make the course stronger. So have the students in my undergraduate and graduate courses. Student feedback was largely anonymous, but I can thank a few people by name: Kelsey Sumner, Karly Gregory, Qian Yudong, Christina Schmidt, Aidan Floyd, Shannon Houser, TODO add names from qualtrics.
-
-Next I'd like to thank my colleagues at Duke who provided valuable support. Duke librarians Megan Von Isenburg and Hannah Rozear set me straight on literature searches. Gavin Yamey helped me understand what we do and don't know about funding for global health research. Liz Turner and Joe Egger have fielded more technical questions that I can count.
-
-On the institutional side, I'm grateful to the Learning Innovations team for coming on this journey with me, including Andrea Novicki, Heather Hans, William Williamson, Ben Richardson, Michael Blair, and Quentin Ruiz-Esparza. Thanks as well to Mary Story and Sarah Martin for supporting me from within the Duke Global Health Institute, and to the Duke OIT staff, including Zach Hill, Jeremy Hopkins, and Richard Biever, who helped me to get domains and servers working, despite my efforts to thwart their progress.
-
-I used R and numerous tools from RStudio to create this book and course materials. I'm very thankful for their support to educators like me. The same goes for members of the open source community who create and maintain awesome software, including Yihui Xie (\texttt{bookdown}), Mike Smith (\texttt{msmbstyle}), Jonathan Weisberg (css help), and many others.
-
-Several scholars were very generous with their time and agreed to let me interview them for the book. Thanks to Daniel Halperin, Salim Abdulla, Paul Garner, Wendy O'Meara, and Vikram Patel. Other colleagues shared comments on drafts, including Daniel Lakens and Solomon Kurz.
-
-I never intended to publish this book as anything other than a course website, but I attended a talk by David Grubbs at Chapman \& Hall/CRC that encouraged me to submit a book proposal. I'm sure glad I did. He sent the initial chapters out for review, and the anonymous reviewers helped me to spot some holes that needed filling. I thank them for their service.
-
-Finally, I'd like to thank my wife, Eve, and my parents for more support and encouragement than one person deserves.
 
 \bibliography{book.bib,packages.bib,ghr.bib}
 

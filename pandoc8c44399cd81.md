@@ -1,0 +1,1 @@
+Translational research was originally focused on moving from "bench to bedside", or from basic research in the lab to clinical research with humans. Today we recognize that other bottlenecks exist that prevent a good idea from making it out of the lab and ultimately impacting population health and policy. 

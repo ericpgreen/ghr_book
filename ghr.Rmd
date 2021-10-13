@@ -1,0 +1,1329 @@
+--- 
+title: "Global Health Research"
+author: "Eric P. Green"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib, ghr.bib]
+biblio-style: apalike-etal
+csl: apa-numeric-superscript.csl
+link-citations: true
+url: 'http\://themethodsection.com/ebook/'
+cover-image: images/cover.jpg
+description: |
+  Online textbook about global health research methods
+geometry: paperheight=10in,paperwidth=8in,margin=1in
+papersize: justified,twoside,symmetric
+always_allow_html: true
+---
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(knitr)
+library(gridExtra)
+library(stringr)
+library(kableExtra)
+# https://haozhu233.github.io/kableExtra/bookdown/use-bootstrap-tables-in-gitbooks-epub.html
+#options(kableExtra.html.bsTable = T)
+library(gt)
+library(flextable)
+library(ggrepel)
+library(grid)
+
+html_table_width <- function(kable_output, width){
+  width_html <- paste0(paste0('<col width="', width, '">'), collapse = "\n")
+  sub("<table>", paste0("<table>\n", width_html), kable_output)
+}
+
+source("footer.R")     # import write_custom_footer()
+write_custom_footer()  # overwrite footer.html with today's page built date
+
+extrafont::font_import()
+extrafont::loadfonts()
+library(tidypvals)
+```
+
+<!-- Include welcome for html only -->
+
+```{r welcome, include=FALSE}
+welcome <- "# Welcome {-}"
+welcome_text <- "<img src='images/cover.jpg' width='261' height='375' alt='Cover image' align='left' style='margin: 0 1em 1em 0' /> I'm working on a new version of this book for publication with CRC Press. New chapters will be released on a rolling basis. This work is shared under the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/). A big thanks to the creators of the [`bookdown`](https://github.com/rstudio/bookdown) and [`msmbstyle`](https://github.com/grimbough/msmbstyle) packages for R used to compile the web version of this book. The source code for this book is available on [Github](https://github.com/ericpgreen/ghr_book)."
+```
+
+`r ifelse(knitr::is_html_output(), welcome, "")`
+`r ifelse(knitr::is_html_output(), welcome_text, "")`
+
+# Preface{-}
+
+Add
+
+<!--chapter:end:index.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Introduction {-}
+
+Rewriting to focus on the importance of defending and communicating science, open science, trust.
+
+<!--chapter:end:00-introduction.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# (PART) START WITH A TEAM AND A QUESTION {-}
+
+A clearly stated research question and a strong team motivated to get answers are the building blocks of success in global health research. The same could probably be said about most research domains, but I'll argue that meaningful and effective collaborations are uniquely essential to global health. They're so important that I've chosen to slot the chapter on collaborations *ahead of* the chapter on research questions. I did this to emphasize an ideal order of operations that starts with team formation before proceeding to collaborative framing of the research problem and question.
+
+Before discussing collaborations, however, we need to establish a shared understanding of what we mean by 'global health research'. That's where we'll start.
+
+# Global Health Research {#ghr}
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
+
+library(tidyverse)
+library(ggtext)
+library(showtext)
+library(sysfonts)
+font_add_google("Source Sans Pro")
+font_add_google("Libre Franklin", regular.wt = 200)
+showtext_auto()
+```
+
+## What is Global Health?
+
+*New York County Courthouse, Lower Manhattan, New York City, circa 2009*
+
+**Judge presiding over jury selection:** And what do you do, Mr. Green?
+
+**Me:** Global health research.
+
+**Judge:**
+
+**Me:** I study access to mental health services.
+
+**Judge:** So health policy then?
+
+**Me:** No, mostly intervention research.
+
+**Judge**: Globally.
+
+**Me:** No, not quite.
+
+**Judge:** What is global health, Mr. Green?
+
+**Me:** Well, you see...*rambles*...
+
+**Judge:** Thank you, Mr. Green. You are dismissed.
+
+<br>
+\vspace{2cm}
+
+I've had this conversation hundreds of times since that court appearance. Now when asked, I say something like, "global health takes a global perspective on public health problems," drawing inspiration from Skolnik.[@skolnik2019] In the wake of the pandemic, I find that people nod along at this framing. It makes sense to them. Thanks, COVID-19!
+
+Go any deeper below the ontological surface, however, and you'll find that there is not a consensus definition of global health.[@merson:2018] I like this one by Koplan et al.[@koplan:2009]:
+
+> **Global health is an area for study, research, and practice that places a priority on improving health and achieving equity in health for all people worldwide.** Global health emphasizes transnational health issues, determinants, and solutions; involves many disciplines within and beyond the health sciences and promotes interdisciplinary collaboration; and is a synthesis of population-based prevention with individual-level clinical care.
+
+Take note of two key elements of their definition:
+
+1. it includes scholars, researchers, and practitioners working across disciplinary boundaries; and
+2. it goes beyond simply improving health to include the goal of achieving health equity.
+
+To expand on the first point, this definition reflects the reality that global health challenges are complex, so the search for solutions must span disciplines. In the study of malaria, for example, you can read about the spread of the disease (epidemiology), the impact of illness on future productivity (economics), the merits of free or subsidized bed nets (public policy), mosquito habitats (ecology), the efficacy of vaccines to prevent the disease (medicine and statistics), rapid diagnostic tests (biomedical engineering), and the adoption and use of bed nets (psychology), just to name a few areas of inquiry.
+
+The second point is that global health is action-oriented, seeking to achieve health equity for all people worldwide. The WHO[@who:2021] defines **equity** as follows:
+
+> Equity is the absence of unfair, avoidable or remediable differences among groups of people, whether those groups are defined socially, economically, demographically, or geographically or by other dimensions of inequality (e.g. sex, gender, ethnicity, disability, or sexual orientation). Health is a fundamental human right. Health equity is achieved when everyone can attain their full potential for health and well-being.
+	
+Put another way, health inequities are unfair and unjust differences in healthcare access or health outcomes that can be prevented or fixed. Health inequities are structural, often resulting from decisions we make about who gets access to resources. 
+
+The consequence of inequity is often inequality. For instance, inequitable access to healthcare services can lead to unequal health outcomes—**health inequalities**—between groups. Differences in health status are also referred to as **health disparities**.
+
+The COVID-19 pandemic has given us many examples of health inequities and disparities. For instance, data compiled by the website Health Inequities Tracker shows that through at least August 2021, Hispanics and Latinos were over-represented in COVID-19 hospitalizations, while non-Hispanic Whites were substantially under-represented.[@het]
+
+```{r disparity, fig.caption="COVID-19 health disparities.", fig.fullwidth=TRUE, echo=FALSE, fig.width=10, fig.height=5}
+tibble(
+  race_eth = c("American Indian and Alaska Native (Non-Hispanic)",
+               "Asian (Non-Hispanic)",
+               "Black or African American (Non-Hispanic)",
+               "Hispanic or Latino",
+               "Native Hawaiian and Pacific Islander (Non-Hispanic)",
+               "Two or more races & Some other race (Non-Hispanic)",
+               "White (Non-Hispanic)"),
+  hosp = c(0.014,
+           0.037,
+           0.161,
+           0.263,
+           0.003,
+           0.047,
+           0.475),
+  pop = c(0.007,
+          0.054,
+          0.122,
+          0.188,
+          0.002,
+          0.027,
+          0.601)
+) %>%
+  mutate(diff = hosp-pop) %>%
+  mutate(diffpos = ifelse(diff>0, 1, 0)) %>% 
+  ggplot(aes(x = diff, y = forcats::fct_reorder(race_eth, diff),
+             color=factor(diffpos))) +
+    geom_vline(xintercept = 0) +
+    geom_point(size=4) +
+    scale_color_manual(values = c("#e69138", "#1f9ac9")) +
+    scale_x_continuous(labels=scales::percent_format(accuracy = 1)) +
+    labs(x="Percentage points under/over represented\n(% of Hospitalizations) - (% of Population)",
+         y=NULL,
+         title = "Hispanic and Latinos disproportionately hospitalized with COVID-19",
+         subtitle = "This is an example of a health disparity.",
+         caption = "Health Equity Tracker (https://healthequitytracker.org). Based on August 2021 data from the U.S. CDC."
+         ) +
+    theme_minimal() +
+    theme(panel.grid.major.x = element_blank(),
+          panel.grid.minor.x = element_blank(),
+          axis.title.x = element_text(margin = margin(t = 20, r = 0, 
+                                                      b = 0, l = 0)),
+          legend.position = "none",
+          axis.text = element_text(size=12,
+                                   family = "Source Sans Pro"),
+          axis.title = element_text(size=14,
+                                    family = "Source Sans Pro"),
+          plot.subtitle = element_text(size=16,
+                                       family = "Source Sans Pro"),
+          plot.title = element_text(face="bold",
+                                    size = 20,
+                                    family = "Source Sans Pro"),
+          plot.title.position = "plot",
+          plot.caption = element_text(size=10,
+                                      family = "Libre Franklin",
+                                      margin = margin(t = 20, r = 0, 
+                                                      b = 0, l = 0)),
+          ) +
+    annotate("text", x = -.03, y = 6.5, 
+             label = "Over-represented in hospitalizations",
+             size = 4, color="#1f9ac9",
+             hjust = 1) + 
+    geom_curve(aes(x = -.02, y = 6.7, xend = 0.067, yend = 7), 
+               color = "#1f9ac9", 
+               arrow = arrow(type = "open",
+                             length = unit(0.1, "inches")), 
+               curvature = -.1, angle = 100, ncp =15) +
+    annotate("text", x = -.03, y = 2.5, 
+             label = "Under-represented in hospitalizations",
+             size = 4, color="#e69138",
+             hjust = 1) + 
+    geom_curve(aes(x = -.132, y = 2.5, xend = -.13, yend = 1), 
+               color = "#e69138", 
+               arrow = arrow(type = "open",
+                             length = unit(0.1, "inches")), 
+               curvature = .7, angle = 100, ncp =15)
+```
+
+Macias Gil et al. point to several factors that might help to explain why Latinos and Hispanics were disproportionately affected by COVID-19.[@macias:2020] 
+
+* Higher rates of co-morbid health conditions
+* More likely to be underinsured or uninsured
+* Undocumented immigration status
+* Language barriers to accessing services
+* Overrepresentation in "essential" jobs where working from home was not possible
+* Greater financial pressures to show up to work, even if unwell or potentially exposed to the virus
+* More likely to live in multigenerational homes where transmission was more likely
+
+Several of these underlying factors, such as undocumented immigration status, fall into the category of **social determinants of health**:[@who:sd] 
+
+> The circumstances in which people are born, grow up, live, work and age, and the systems put in place to deal with illness.
+
+The disease COVID-19 is *directly* caused by infection with the novel coronavirus, SARS-CoV-2, but who gets infected, hospitalized, and dies is not completely random. Infectious diseases are social affairs, and some people are more vulnerable because of their context. To prevent future pandemics, we must gain a deeper understanding of the interaction between social determinants of health and disease risk and, most importantly, work to fix the underlying societal inequities that make certain groups more vulnerable.
+
+```{r covidvaccines, out.width="100%", fig.margin=TRUE}
+knitr::include_graphics("images/covid-vaccination-doses-per-capita.png")
+```
+
+Another example of a COVID-19 inequity is global access to vaccines. By October 2021, nearly half of the world's population had received at least one dose of a COVID-19  vaccine, but the first 6.5 billion doses mostly went into the arms of citizens of wealthy countries. Less than 3 percent of people in low-income countries had received even one dose. While true that many low-income countries escaped the worst of the pandemic's first few waves, the glacial roll out of vaccines globally—what some have decried as a vaccine apartheid—might leave many nations vulnerable to deadly new variants and their citizens banned from certain travel destinations. 
+
+## What is Research?
+
+```{r commonrule, eval=knitr::is_latex_output(), echo=FALSE, results='asis'}
+cat(tufte::margin_note("\\faIcon{book-reader} This particular definition comes from Title 45 of the United States Code of Federal Regulations, Part 46, Subpart A, also known as the Common Rule. Read more at \\href{https://tinyurl.com/af98yyak}{\\footnotesize\\texttt{tinyurl.com/af98yyak}}"))
+```
+
+Definitions of **research** typically include two key elements: research is (i) a **systematic investigation** (ii) designed to develop or contribute to **generalizable knowledge**. 
+
+By generalizable knowledge, we mean that the investigation intends to advance our scientific understanding. One way that a study can advance scientific understanding is by applying the results from a limited investigation to a larger group of people not involved in the study. 
+
+For instance, you might interview parents of young children about their use (or lack thereof) of mosquito nets. You intend to analyze the transcripts and develop new ideas about the barriers to bed net use that you hope to publish in an academic journal. Other scholars will read this work use it to develop new theories of health behavior and create new interventions that promote bed net use. This is research.
+
+But what if a journalist decides to write a feature article about the burden of malaria and interviews a few of the **same** parents. Is this research? 
+
+```{marginfigure}
+The Common Rule definition of research excludes journalism activities, public health surveillance activities in support of an order from a public health agency, criminal justice investigations, and operational activities related to national security. 
+``` 
+
+No. For one, the journalist might not follow a systematic method for deciding which parents to approach, how to conduct the interviews, or how to synthesize what they learn. Second, the journalist has a different objective. Whereas you wanted to systematically advance our understanding of barriers to bed net use—insights that might apply to different parents in other settings—the journalist intends to inform the public by telling the stories of a few specific parents.        
+
+Another way that a study can advance scientific understanding is by developing and testing scientific methods and procedures. For instance, a research team might plan a small pilot test to collect initial data that will inform the design of a larger study. In most cases, we'd consider these pre-study activities to be research—even if the team does not intend to publish the results—because the pilot study is part of the knowledge generation process.
+
+But here again, intent matters. An example of a systematic investigation NOT intended to produce generalizable insights might be a company's A/B test of two different email marketing campaigns. Acme Corp. randomly assigns a small percentage of its users to receive email campaign A vs campaign B and tracks which campaign generates the most clicks or sales. The company's objective is to determine which campaign optimizes their marketing spend for conversions, not to say something more general about human perception and behavior. Therefore, it's not considered research.
+
+As we'll discuss in a later chapter, it's always a good idea to consult with an Institutional Review Board to determine if your proposed work is considered research (and if it is, whether it falls under policies requiring ethical review).
+
+## What is Science?
+
+Whether you are designing a study that relies on qualitative methods, quantitative methods, or a blend of both, there are 
+
+There are three main characteristics of scientific research that apply to most of global health:[@king:1994]
+
+1. the goal is inference;
+2. the procedures are public; and
+3. the conclusions are uncertain.
+
+### THE GOAL IS INFERENCE{-}
+
+Science is more than observation. To create generalizable knowledge, you 
+
+
+It's data + inference. 
+
+**Inference** is using the data you have to make conclusions about 
+
+
+making conclusions about some unobserved or unmeasured phenomenon based on direct observations of the world. What is known is used to infer something about things that are not known. This process can be deductive or inductive. 
+
+In **deductive** reasoning, we start from general theories and make hypotheses. Then we collect data and make conclusions based on the data. **Inductive** reasoning flows the other direction, from specific observations to the generation of hypotheses and theories. To say that quantitative research is deductive and qualitative research is inductive is not quite right, but it's often true.
+
+The point to take away about inference is that, regardless of the approach to reasoning, the goal of scientific research is to use what we observe to make conclusions about what we do not or cannot observe directly. This is sometimes referred to as **empiricism**, and our systematic observations are **empirical evidence**. Empiricism is at the heart of scientific research.
+
+### THE PROCEDURES ARE PUBLIC{-}
+
+```{r pancakes, fig.cap="A poorly documented Method section. Source: [http://tinyurl.com/yxtabza3](http://tinyurl.com/yxtabza3)", echo=F, fig.margin = TRUE}
+knitr::include_graphics("images/pancakes2.png", dpi = NA)
+```
+
+Scientific research uses public methods that can be examined and replicated. A Method section in a scientific paper is like a recipe. If you have ever tried to follow a confusing recipe, you can appreciate the importance of good documentation. Your study's recipe must be clear (well written), thorough (no "dash" of this or that), and shared publicly (not a secret passed down to lab members).
+
+**Replication** is a core principle of scientific research. No one study rules the day. If the results of a study are robust, another research group should be able to follow your recipe and replicate the findings. When such findings are replicated, we all have more confidence in the results. 
+
+In later chapters we'll learn strategies for writing a good Method section (and appendices!) and discuss why replications are actually rare in practice—and why they can be so controversial.
+
+### THE CONCLUSIONS ARE UNCERTAIN{-}
+
+Every method has limitations, every measurement has error, and every model is wrong to some extent. Take the estimation of maternal mortality rates as an example. @hogan:2010 published maternal mortality estimates for 181 countries. Some countries, such as the United States, have vast amounts of data in vital registries that attempt to track all births and deaths. It's not perfect, so we still estimate the maternal mortality rate using a statistical model (we'll discuss models more in a later chapter). 
+
+As you can see in the left panel of Figure \@ref(fig:mmr), the United States has a very low level of maternal mortality, between about 10-20 maternal deaths for every 100,000 live child births. Compared to some countries, the US has a lot of data points for estimating the level and trend in maternal deaths, so the "uncertainty band" is narrow. 
+
+```{r mmr, fig.margin=FALSE, fig.fullwidth=TRUE, echo=FALSE, fig.cap="Estimates of the maternal mortality rate in the United States and Afghanistan, [@hogan:2010]. Visualized by Yours Truly based on values extracted from published plots.", warnings=FALSE, message=FALSE, fig.width=12, eval=FALSE}
+
+# read in us data
+mmr_us <- read.csv("examples/data/mmr_us.csv", stringsAsFactors = FALSE)
+mmr_us <- 
+mmr_us %>% 
+  filter(year!="") %>% 
+  arrange(year) %>%
+  mutate(year = gsub("/", "-", year),
+         year = lubridate::ymd(paste(year, "01", sep="-"))
+  ) %>%
+  filter(!is.na(mmrU)) %>%
+  filter(!is.na(mmr)) %>%
+  filter(!is.na(mmrL)) 
+
+source_us <- read.csv("examples/data/mmr_us_source.csv", stringsAsFactors = FALSE)
+source_us <-
+source_us %>%
+  filter(source=="who" | source=="vr") %>%
+  mutate(year = gsub("/", "-", year),
+         year = lubridate::ymd(paste(year, "01", sep="-"))
+  ) %>%
+  mutate(source = ifelse(source=="who", "WHO Estimate",
+                                 "Vital registry"))
+
+p1_us <- 
+mmr_us %>% 
+  ggplot() +
+  geom_smooth(data=mmr_us, mapping=aes(x=year, y=mmr), color="#1f9ac9ff",
+              size=2) +
+  geom_smooth(data=mmr_us, mapping=aes(x=year, y=mmrL), linetype=0) +
+  geom_smooth(data=mmr_us, mapping=aes(x=year, y=mmrU), linetype=0) 
+
+# build plot object for rendering 
+pp1_us <- ggplot_build(p1_us)
+
+# extract data from the upper and lower lines
+df2_us <- data.frame(x = as.Date(pp1_us$data[[1]]$x, origin = "1970-01-01"),
+                     ymin = pp1_us$data[[2]]$y,
+                     ymax = pp1_us$data[[3]]$y) 
+
+# use the lm data to add the ribbon to the plot 
+p_mmr_us <-
+ggplot() +
+  geom_smooth(data=mmr_us, mapping=aes(x=year, y=mmr), color="#1f9ac9ff",
+              size=2) +
+  ylim(0, 25) +
+  scale_x_date(breaks = as.Date(c("1980-01-01", "1985-01-01",
+                                  "1990-01-01", "1995-01-01",
+                                  "2000-01-01", "2005-01-01",
+                                  "2010-01-01")),
+               date_labels = "%Y") +
+  theme_classic() +
+  ylab("MMR per 100,000 live births") +
+  theme(text = element_text(size=20),
+        axis.title.x = element_blank(),
+        legend.position = "none") +
+  scale_fill_manual(values = c("#e69138", "#6aa84fff")) +
+  scale_color_manual(values = c("#e69138", "#6aa84fff")) +  
+  geom_ribbon(data = df2_us, aes(x = x, ymin = ymin, ymax = ymax), 
+              fill = "grey", alpha = 0.4) +
+  geom_point(data=source_us, mapping=aes(x=year, y=value, color=source),
+             size=4, alpha=1) +
+  geom_label_repel(data=source_us[c(26,31),], 
+                   mapping=aes(x=year, y=value, label = source, 
+                               color=source,
+                               fill=source),
+                   box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50',
+                   color = 'white',
+                   size=6,
+                   nudge_y=-3,
+                   nudge_x=-4000,
+                   max.iter = 2000, 
+                   direction="both") +
+  ggtitle("United States")
+
+
+
+# read in afghanistan data
+mmr_af <- read.csv("examples/data/mmr_af.csv", stringsAsFactors = FALSE)
+mmr_af <- 
+  mmr_af %>% 
+  filter(year!="") %>% 
+  arrange(year) %>%
+  mutate(year = gsub("/", "-", year),
+         year = lubridate::ymd(paste(year, "01", sep="-"))
+  ) %>%
+  filter(!is.na(mmrU)) %>%
+  filter(!is.na(mmr)) %>%
+  filter(!is.na(mmrL)) 
+
+source_af <- read.csv("examples/data/mmr_af_source.csv", stringsAsFactors = FALSE)
+source_af <-
+  source_af %>%
+  mutate(year = gsub("/", "-", year),
+         year = lubridate::ymd(paste(year, "01", sep="-"))
+  ) %>%
+  mutate(source = ifelse(source=="who", "WHO Estimate",
+                         "Outliers"))
+
+p1_af <- 
+  mmr_af %>% 
+  ggplot() +
+  geom_smooth(data=mmr_af, mapping=aes(x=year, y=mmr), color="#1f9ac9ff",
+              size=2) +
+  geom_smooth(data=mmr_af, mapping=aes(x=year, y=mmrL), linetype=0) +
+  geom_smooth(data=mmr_af, mapping=aes(x=year, y=mmrU), linetype=0) 
+
+# build plot object for rendering 
+pp1_af <- ggplot_build(p1_af)
+
+# extract data from the upper and lower lines
+df2_af <- data.frame(x = as.Date(pp1_af$data[[1]]$x, origin = "1970-01-01"),
+                     ymin = pp1_af$data[[2]]$y,
+                     ymax = pp1_af$data[[3]]$y) 
+
+# use the lm data to add the ribbon to the plot 
+
+p_mmr_af <-
+mmr_af %>% 
+  ggplot() +
+  geom_smooth(data=mmr_af, mapping=aes(x=year, y=mmr), color="#1f9ac9ff",
+              size=2) +
+  ylim(0, 5000) +
+  scale_x_date(breaks = as.Date(c("1980-01-01", "1985-01-01",
+                                  "1990-01-01", "1995-01-01",
+                                  "2000-01-01", "2005-01-01",
+                                  "2010-01-01")),
+               date_labels = "%Y") +
+  theme_classic() +
+  ylab("MMR per 100,000 live births") +
+  theme(text = element_text(size=20),
+        axis.title.x = element_blank(),
+        legend.position = "none") +
+  scale_fill_manual(values = c("grey", "#6aa84fff")) +
+  scale_color_manual(values = c("grey", "#6aa84fff")) +
+  geom_ribbon(data = df2_af, aes(x = x, ymin = ymin, ymax = ymax), 
+              fill = "grey", alpha = 0.4, linetype=0) +
+  geom_point(data=source_af, mapping=aes(x=year, y=value, color=source),
+             size=4, alpha=1) +
+  geom_label_repel(data=source_af[c(4, 9),], 
+                   mapping=aes(x=year, y=value, label = source, 
+                               color=source,
+                               fill=source),
+                   box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50',
+                   color = 'white',
+                   size=6,
+                   nudge_y=1000,
+                   max.iter = 2000, 
+                   direction="both") +
+  ggtitle("Afghanistan")
+
+grid.arrange(p_mmr_us, p_mmr_af, ncol=2, top = textGrob("Estimates of maternal mortality", gp=gpar(fontface="bold", fontsize=25)), widths = c(1,1))
+```
+
+Now take a look at Afghanistan on the right. Note that the y-axis scale is much larger in the 1000s, reflecting the fact that many more Afghan women die of causes related to pregnancy or childbirth. Next, pay attention to the width of the uncertainty band. It spans a range of more than 3000 deaths. Compare this to a range of fewer than 5 deaths in the US! This is because there are very few data points available to estimate the "true" value in Afghanistan, and these individual data points can differ by more than 1000 deaths. We don't know much about maternal mortality in Afghanistan, but the blue line is our best guess.
+
+```{marginfigure}
+Your [spidy sense](https://en.wiktionary.org/wiki/Spidey-sense) should tingle a bit when you read an article that ignores or hides uncertainty.  
+```
+
+The takeaway message is that there is uncertainty in everything. No single estimate can be considered "The Truth." Instead, we must focus on the origin of estimates and recognize the limitations of what we know or what is being reported.
+
+## What Constitutes Global Health Research?
+
+Global health research brings together scholars and practitioners from many different disciplines to tackle big challenges. Therefore, the methods of these disciplines *are* the methods of global health research. We can organize the landscape as shown in Figure \@ref(fig:basicapplied). 
+
+```{r basicapplied, fig.cap="A research taxonomy", echo=F, fig.fullwidth = TRUE}
+knitr::include_graphics("images/basicapplied.png", dpi = NA)
+```
+
+Research is divided into two main categories: basic and applied. Overlapping with applied research is an area of work called "monitoring and evaluation", or M\&E. Let's examine what constitutes research before turning to M\&E.
+
+### BASIC RESEARCH{-}
+
+**Basic research**—also known as "pure" or "blue skies" research—is the pursuit of fundamental knowledge of phenomena. For example, scientists conduct laboratory experiments to understand the parasitic life cycle and how parasites interact with humans at different stages. Another example is the scientific investigation of the properties of cancer cells to better understand how they grow and spread. 
+
+The information generated by basic science becomes the basis for applied science. It's the "bench" in the "bench to bedside" cascade of research needed to take an idea from the lab (*the bench*) to a new medical treatment (*delivered to the patient's bedside*). 
+
+Harvard Medical School's Rachel Wilson explains this beautifully:
+
+> The new therapies of today were the prototypes of yesterday. And the prototypes of yesterday were previously just findings in laboratories, and before that they were just an idea. Unless we have new ideas, we're not going to have useful therapies. Great new therapies don't just fall like apples from a tree.
+
+<iframe width="690" height="388" src="https://www.youtube.com/embed/uUnlPMeVusk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+### APPLIED RESEARCH {-}
+
+**Applied research** focuses on specific problems or real-world applications. Whereas the basic scientist might toil away in the lab to understand how cellular enzymes function without a specific clinical application in mind—discovering this function is the end goal for this scientist—the applied researcher will take this knowledge of enzymes to develop new therapies that could treat cancer.
+
+In the world of malaria research, an applied research question might be, "How can we increase the coverage and use of bed nets that prevent malaria transmission?" The basic science, such as the behavioral habits of the mosquito and the transmission conditions for malaria, have already been characterized by entomologists and epidemiologists. 
+
+#### Clinical Research{-}
+
+```{marginfigure}
+Read about Aunt Debbie's journey: [tinyurl.com/y5ae459m](https://tinyurl.com/y5ae459m).
+```
+
+Applied science takes many different forms, including [**clinical research**](https://en.wikipedia.org/wiki/Clinical_research). Clinical research is a broad field that encompasses patient-oriented research, epidemiological and behavioral studies, outcomes research, and health services research. Basic research provides the foundation for all clinical research.
+
+```{r ctrial, fig.cap="Pipeline from basic research to FDA approval. Source: [phrma.org/advocacy/research-development/clinical-trials](http://www.phrma.org/advocacy/research-development/clinical-trials).", echo=F, fig.fullwidth = TRUE}
+knitr::include_graphics("images/clinicaltrials.png", dpi = NA)
+```
+
+```{marginfigure}
+<iframe width="300" height="169" src="https://www.youtube.com/embed/dsfPOpE-GEs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>What are clinical trial phases? National Cancer Institute (2016). [tinyurl.com/y2rur4nx](https://tinyurl.com/y2rur4nx)
+```
+
+One type of clinical research is a clinical trial. Drugs and vaccines have to pass through different phases of clinical trials before regulatory bodies, such as the Federal Food and Drug Administration (FDA), will approve their use with humans:
+
+```{marginfigure}
+Behavioral research (e.g., development and evaluation of parenting interventions) does not follow the same exact phases of vaccine and drug development, but the broad principles are the same.
+```
+
+<br>
+```{r trials, echo=F}
+phases <- data.frame(v1=c(
+  "**Preclinical research**",
+  "**Phase 0**",
+  "**Phase I**",      
+  "**Phase II**", 
+  "**Phase III**",
+  "**Phase IV**"
+),
+v2=c(
+  "",
+  "<10",
+  "10s",
+  "100s",
+  "1000s",
+  ""
+     ),
+v3=c(
+  "Are there signs that the drug candidate will have an effect in the lab?",
+  "What happens in the body (pharmacokinetics) when a very low dose is administered to human subjects? (optional phase)",
+  "Is the drug safe? What is the best dose that balances possible effects with toxicity?",
+  "When using this optimal dose, is there any effect of the drug on clinical markers or health outcomes?",
+  "What is the effect of the drug on clinical markers or health outcomes when compared to an existing treatment or placebo in a randomized evaluation? Success at this stage is required for regulatory approval in some countries.",
+  "Are there long-term adverse effects of the drug once it is available on the market?"
+))
+names(phases) <- c("Phase", "Enrollment", "Goal")
+
+knitr::kable(phases, format = "html") %>%
+  html_table_width(c(200,100,400)) %>%
+  column_spec(1, extra_css = "vertical-align:top;") %>%
+  column_spec(2, extra_css = "vertical-align:top;") %>%
+  column_spec(3, extra_css = "vertical-align:top;")
+```
+<br>
+
+##### Case study: Developing a malaria vaccine {-}
+
+The development of a vaccine for malaria provides a good example of the life cycle of a clinical trial. In 2015, after 30 years of research, a vaccine candidate called RTS,S, or Mosquirix™, [made the news](http://money.cnn.com/2015/07/24/news/malaria-vaccine-bill-gates/) for having gotten one step closer to becoming a licensed vaccine after a successful Phase III trial. 
+
+```{marginfigure}
+<iframe width="300" height="169" src="https://www.youtube.com/embed/Ww9jWFwfmHE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>Malaria vaccine one step closer. CNN (2015). [tinyurl.com/y4sfn4ep](https://tinyurl.com/y4sfn4ep)
+```
+
+[Development of RTS,S](http://malariavaccine.org/files/UpdatedRTSS_FactSheet_21April2010.pdf) began in 1984 through a partnership between the pharmaceutical company GlaxoSmithKline (GSK) and the Walter Reed Army Institute of Research. In 1987, a promising vaccine candidate entered **preclinical** research. During the preclinical phase, researchers performed tests on nonhuman subjects to collect data on how well the vaccine worked (**efficacy**), how much damage it could do to an organism (**toxicity**), and how the body affected the vaccine (**pharmacokinetics**).
+
+```{r rtss, fig.cap="RTS,S timeline. Source: [http://tinyurl.com/y3o2godv](http://tinyurl.com/y3o2godv).", echo=F, fig.fullwidth = FALSE}
+knitr::include_graphics("images/rtss.png", dpi = NA)
+```
+
+```{marginfigure}
+If you compare the sample sizes of the Mosquirix™ trials, you'll see that they do not follow the rules of thumb noted in the table above. These types of deviations are common in research. The goals of these particular trials demanded larger sample sizes than is typical.
+```
+
+Clinical research on humans began in 1992. To obtain regulatory approval, the vaccine had to complete three phases of testing. Doherty et al. [-@doherty:1999] conducted a **Phase I** safety and immunogenicity trial with 20 adults in The Gambia in 1997. This small sample size is typical of Phase I trials, where the main objectives are usually to determine a safe dosing range and to evaluate side effects. These researchers reported that the vaccine did not have any significant toxicity but did produce the expected antibodies. 
+
+Several **Phase II** studies conducted over the following decade (Phase IIa and Phase IIb) demonstrated the **efficacy** of the vaccine against several end points (or outcomes) [@moorthy:2009]. A Phase IIb trial began in Mozambique in 2003 with more than 2,000 children aged 1 to 4 years [@alonso:2004]. Each child was randomly assigned to receive 3 doses of RTS,S or a control vaccine. After 6 months, the prevalence of malaria was 37% lower in the treatment group than in the control group. A follow-up study with 214 infants also showed partial protection from malaria [@aponte:2007]. This Phase II trial was an important proof-of-concept study.
+
+The final results of a large **Phase III** trial with more than 15,000 infants and young children in 7 African countries were published in *The Lancet* in 2015 [@rts:2015]. Children who participated in the study were randomly assigned to 1 of 3 arms: (a) 3 doses of RTS,S and a booster dose at month 20, (b) 3 doses of RTS,S and a booster dose of a comparator vaccine at month 20, or (c) 4 doses of a comparator vaccine. RTS,S reduced clinical malaria cases by 28% and 18% among young children and infants, respectively, over a 3--4-year period. This Phase III trial achieved its goal—to show that the treatment was efficacious.
+
+On the basis of these results, the European Medicines Agency issued a "European scientific opinion" to help inform the decision of the WHO and African national regulatory authorities regarding their recommendation of the vaccine. If RTS,S is approved for use and eventually hits the market, researchers will likely conduct **Phase IV** trials to evaluate the vaccine's long-term effects. 
+
+<iframe src="https://webplayer.whooshkaa.com/episode/417875?theme=dark&visual=true&background-color=%231F9AC9&waveform-base-color=%23E69138&waveform-progress-color=%23FFFFFF" height="190" width="50%" scrolling="no" frameborder="0" allow="autoplay"></iframe>
+
+#### Implementation Research and Translational Research{-}
+
+```{marginfigure}
+Implementation *research* is a subset of implementation *science*. Whereas implementation research can focus on scaling a particular intervention, implementation science is the broader study of the methods to scale and promote the adoption of interventions.
+```
+
+The research on RTS,S, will not end there, however. The vaccine may be efficacious, but that does not mean it will be easy or cost-effective to produce and deliver at a scale of millions. Studies that assess how best to get efficacious treatments to the people who need them most fall under the domain of **implementation research**. 
+
+```{marginfigure}
+Translational research was originally focused on moving from "bench to bedside", or from basic research in the lab to clinical research with humans. Today we recognize that other bottlenecks exist that prevent a good idea from making it out of the lab and ultimately impacting population health and policy. 
+```
+
+Making the jump from studies showing clinical efficacy to wide-spread adoption and population-level impact is one example of research translation. Practitioners of **translational research** point to 4 key bottlenecks:
+
+* T1: Translation from basic science to clinical research
+* T2: Translation from early clinical trials to Phase III trials and beyond with larger patient populations
+* T3: Translation from efficacy trials (i.e., Phase III trials) to real-world effectiveness through implementation research
+* T4: Translation from evidence about delivery at scale to the adoption of new policies
+
+```{r translational, fig.cap="Bottlenecks in translating ideas into applications. Source: Medical University of South Carolina, http://bit.ly/2iq2Blv", echo=F, fig.fullwidth = FALSE}
+knitr::include_graphics("images/translational.jpg", dpi = NA)
+```
+
+#### Summary{-}
+
+<br>
+```{r terms, echo=F}
+terms <- data.frame(v1=c(
+  "**Basic research**",
+  "**Pre-clinical research (applied)**",      
+  "**Clinical research (applied)**", 
+  "**Implementation research (applied)**"
+),
+v2=c(
+  "Fundamental research in the lab to characterize and understand some entity",
+  "Test tube/culture (in vitro) or animal (in vivo) research to prepare for clinical research with human subjects",
+  "Research with human subjects to determine safety and efficacy with respect to clinical markers and health outcomes",
+  "Research on how interventions/treatments work under real-world conditions"
+     ),
+v3=c(
+  "What are the properties of this enzyme?",
+  "What happens to this enzyme when a particular compound is introduced?",
+  "When formulated into a vaccine, is this vaccine candidate safe for humans? Does it have an effect on human health?",
+  "What is the best way to distribute the vaccine and promote wide-scale adoption to achieve the same effects as shown in controlled trials?"
+))
+names(terms) <- c("Term", "Definition", "Example")
+
+knitr::kable(terms, format = "html") %>%
+  html_table_width(c(150,275,275)) %>%
+  column_spec(1, extra_css = "vertical-align:top;") %>%
+  column_spec(2, extra_css = "vertical-align:top;") %>%
+  column_spec(3, extra_css = "vertical-align:top;")
+```
+<br>
+
+Translational research is cross-cutting, linked to several key bottlenecks where good ideas can stall and ultimately die.
+
+### MONITORING AND EVALUATION
+
+```{r basicapplied2, fig.cap="A research taxonomy, revisited.", echo=F, fig.margin=TRUE}
+knitr::include_graphics("images/basicapplied.png", dpi = NA)
+```
+
+Another arena of applied work in global health is **monitoring and evaluation**, or M\&E.
+
+
+#### Evaluation{-}
+
+In the United  States, program evaluation became commonplace by the end of the 1950s and grew dramatically in the 1960s as the federal government expanded and introduced new social programs. Lawmakers wanted accountability, and the evaluation of social programs took off [@rossi:2003]. ***But is program evaluation really research?*** 
+
+
+```{marginfigure}
+Campbell had an outsized impact on the field. It is no surprise that an organization dedicated to synthesizing the best available evidence on social interventions, the [Campbell Collaboration](http://www.campbellcollaboration.org/), bears his name.
+```
+
+Methods giant [Donald Campbell](https://en.wikipedia.org/wiki/Donald_T._Campbell) thought so:[@campbell:1969]
+
+> The United States and other modern nations should be ready for an experimental approach to social reform, an approach in which we try out new programs designed to cure specific problems, in which we learn whether or not these programs are effective, and in which we retain, imitate, modify or discard them on the basis of their effectiveness on the multiple imperfect criteria available.
+
+But not everyone agrees. Some have argued that program evaluation is really designed for program implementers and funders, and that the messy nature of program implementation requires a loosening of research standards [@cronbach:1982]. We should simply evaluate the evidence, or "learn what we can." 
+
+In their introductory text on evaluation, Rossi et al. [-@rossi:2003] strike a balance in views on this question of whether program evaluation is research. Their answer is perhaps a bit unsatisfying but is arguably true nevertheless: *It depends*. 
+
+Program evaluations should be as rigorous as logistics, ethics, politics, and resources permit—and no less. Surely a lower bound in terms of quality or what is worthwhile exists, but the line is so context dependent that a simple rule is best: "Don't go beyond the data." Every organization wants to claim "impact," but not every evaluation can be based on the design and implementation.
+
+##### Impact evaluation{-}
+
+Revisiting the research taxonomy presented earlier, we see that there is overlap between evaluation (orange) and research (blue), a nod to Campbell's view that program evaluation can be considered research in many cases. Furthermore, we see that something called "impact evaluation" is a subset of evaluation. 
+
+```{marginfigure}
+A clinical trialist who works on Phase III studies is unlikely to refer to the trial as an "impact evaluation", even though the randomized study design is a type of impact evaluation. This language is more commonly used by economists and others who study the impact of social sector programs and interventions. For instance, see the [International Initiative for Impact Evaluation](http://www.3ieimpact.org/) (3ie) and the World Bank's [Development Impact Evaluation](http://www.worldbank.org/en/research/dime) (DIME) group.
+```
+
+```{marginfigure}
+<iframe width="300" height="169" src="https://www.youtube.com/embed/HEJlT8t5ezU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>What is impact evaluation? World Bank (2016). [https://tinyurl.com/yyxbpxvd](https://tinyurl.com/yyxbpxvd)
+```
+
+In an **impact evaluation**, the goal is to infer that some program—or some treatment, intervention, or policy—had an effect on some outcome. As we'll discuss in later chapters, there are several research designs that will generate evidence of "impact". One design in particular, the randomized controlled trial common to Phase II and III clinical trials, is an important type of impact evaluation. Not all impact evaluations are RCTs, but all RCTs are impact evaluations. 
+
+#### Monitoring{-}
+
+Program monitoring is concerned with the implementation of programs, policies, or interventions. How are resources being used? Is the program being delivered as intended (or *with fidelity*)? How many people participate, and does the program reach the intended targets? These are all program-monitoring questions.
+
+```{marginfigure}
+Bookmark these two terms. They will become very important when we talk about how to think about study results. 
+```
+
+Accurate monitoring is essential for reporting data to funders, but it is also essential for all good evaluations. The reason is simple: If a program fails—that is, has no impact—the next question is why? Did the program fail because the idea or theory behind the program was wrong (**theory failure**)? Or was the implementation of the program so troubled that there was never a chance for success (i.e., **implementation failure**)? Every trial should include ongoing monitoring or a formal process evaluation to assess the impact of the program on a continual basis.
+
+## Who Funds Global Health Research?
+
+```{marginfigure}
+The precise amount spent on global health research and development (R\\&D) is not clear [@schaferhoff:2015].
+```
+
+Billions of dollars are spent on global health research every year. This funding comes from public institutions such as the National Institutes of Health (NIH) in the United States and private philanthropy organizations such as the Bill and Melinda Gates Foundation.
+
+```{marginfigure}
+The [World RePort database](https://worldreport.nih.gov/app/) from the NIH—the [largest funder of health research in the world](http://www.healthresearchfunders.org/health-research-funding-organizations/)—lists health research projects totaling nearly $45 billion in 2015. It's possible to filter on the country of the recipient organization, but this does not count money disbursed to US and European organizations working on global health issues.
+```
+
+In 2015, the international community disbursed $36.4 billion in development assistance for health, down from a peak of $38 billion in 2013 [@ihme:2016]. Although Figure \@ref(fig:funding) does not present total research dollars contributed, per se, it does show the sources of global health financing, the channels through which they flow, and the areas on which they focus (see [here](http://vizhub.healthdata.org/fgh/) for an interactive version).
+
+```{r funding, fig.fullwidth = TRUE, fig.cap="Flows of global health financing. Abbreviations: BMGF, Bill \\& Melinda Gates Foundation; SWAps \\& HSS, sector-wide approaches and health-sector support; Gavi, the Vaccine Alliance. Source: Institute for Health Metrics and Evaluation, http://vizhub.healthdata.org/fgh/", echo=F}
+knitr::include_graphics("images/ihmefunding.png", dpi = NA)
+```
+
+The United States Government contributed one-third of all development assistance for health in 2015 ($13 billion). More than half of USG funding was directed to HIV/AIDS, malaria, tuberculosis, and other infectious diseases. Noncommunicable diseases received <1% of resources, despite accounting for 7 of the 10 leading causes of death globally (Figure \@ref(fig:cod)).
+
+```{r cod, fig.cap="Global deaths per 100,000. Abbreviations: COPD, chronic obstructive pulmonary disease. Source: Institute for Health Metrics and Evaluation, http://vizhub.healthdata.org/gbd-compare/", echo=F}
+knitr::include_graphics("images/cod.png", dpi = NA)
+```
+
+## Who Produces Global Health Research?
+
+Academic centers around the world, like the [Duke Global Health Institute](https://globalhealth.duke.edu/), are major contributors to global health research. Public and private donors like the USG, the Bill and Melinda Gates Foundation, and the World Bank make grants to university-affiliated faculty members who partner with colleagues inside and outside governments to plan and conduct research. Donors also channel research support to nonprofit research organizations such as [FHI 360](https://www.fhi360.org/) and [RTI International](https://www.rti.org/), who work in a similar fashion. 
+
+Interesting hybrid models include the Abdul Latif Jameel Poverty Action Lab (JPAL) and Innovations for Poverty Action (IPA). [JPAL](http://www.povertyactionlab.org/) is a global network of university-affiliated professors from more than 50 universities that use randomized evaluations (i.e., experiments) to answer policy questions related to poverty alleviation. The JPAL website contains excellent resources regarding the methods used in randomized evaluations, as well as links to published studies and policy briefs. [IPA](http://www.poverty-action.org/) is a sister organization that is also a leader in the use of randomized evaluations to study important policy questions about global poverty.
+
+## Where is Global Health Research Published?
+
+```{marginfigure}
+<iframe width="300" height="169" src="https://www.youtube.com/embed/HN6zpQGvkSA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>What is global health? The Lancet (2016). [https://tinyurl.com/y6gmgabw](https://tinyurl.com/y6gmgabw)
+```
+
+Global health research is published in medical journals (e.g., [*The Lancet*](http://www.thelancet.com/) and [*JAMA*](http://jamanetwork.com/journals/jama)), general science journals (e.g., [*Science*](http://science.sciencemag.org/) and [*PLOS ONE*](http://journals.plos.org/plosone/)), discipline-specific journals (e.g., [*The Journal of Immunology*](http://www.jimmunol.org/content/198/1/184.short) and [*Epidemiology*](http://journals.lww.com/epidem/pages/default.aspx)), and disease-specific journals (e.g., [*AIDS*](http://journals.lww.com/aidsonline/Pages/default.aspx) and [*Malaria Journal*](https://malariajournal.biomedcentral.com/)). Journals specializing in global health include [*The Lancet Global Health*](http://www.thelancet.com/journals/langlo/latestcontent), [*BMJ Global Health*](http://gh.bmj.com/), [*Global Public Health*](http://www.tandfonline.com/toc/rgph20/current), and [*Global Health: Science and Practice*](http://www.ghspjournal.org/).
+
+## The Takeaway
+
+Research is defined as a systematic investigation whose goal is to develop or contribute to generalizable knowledge. As global health is the study and practice of improving health and achieving equity in health, **global health research** includes all systematic efforts to create generalizable knowledge of how we can improve health and achieve equity in health for everyone, everywhere. 
+
+```{marginfigure}
+Usually when people speak of "the literature," they mean [scholarly](https://en.wikipedia.org/wiki/Academic_publishing) or [peer-reviewed](https://en.wikipedia.org/wiki/Peer_review) journal articles. In addition, a body of work called "[grey literature](https://en.wikipedia.org/wiki/Grey_literature)" is more encompassing and harder to search systematically. Grey literature sources are typically disseminated through channels other than peer-reviewed journals. Examples include technical reports or [white papers](https://en.wikipedia.org/wiki/White_paper) published on the web.
+```
+
+Given the complexity of our global health challenges, global health research is multidisciplinary and interdisciplinary. This means that, as a budding global health researcher, you will likely collaborate on teams with colleagues from many different fields. Each discipline has its own methodological preferences and core approaches, but we all operate in the same research landscape that is divided into basic and applied research. Much of the literature in global health focuses on our applied challenges, so you will read a lot about clinical research and trials, translational research, implementation research, and M\&E (monitoring and evaluation).
+
+	So no matter what discipline you call home, or what stage of research you find most interesting, you can make great contributions to our collective efforts to improve health and achieve equity in health.
+
+<!--chapter:end:01-ghr.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Build Collaborations {#collaborations}
+
+<!--chapter:end:03-collaborations.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Develop Research Ideas and Questions {#ideas}
+
+<!--chapter:end:04-ideas.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# (PART) GET TO KNOW THE SCIENTIFIC LITERATURE {-}
+
+# Search the Literature {#searching}
+
+<!--chapter:end:06-searching.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Read Scientific Articles {#reading}
+
+<!--chapter:end:07-reading.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Use Systematic Reviews and Meta-Analyses {#reviews}
+
+<!--chapter:end:08-reviews.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# (PART) CONSIDER THREATS TO VALIDITY {-}
+
+Insert intro to part.
+
+# Statistical Inference {#statinfer}
+
+<!--chapter:end:10-statinfer.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Causal Inference {#causalinfer}
+
+<!--chapter:end:11-causalinfer.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# External Validity and Generalizability {#external}
+
+<!--chapter:end:12-external.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Construct Validity {#construct}
+
+<!--chapter:end:13-construct.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# (PART) SELECT A RESEARCH DESIGN {-}
+
+
+# Randomized Experiments {#experiments}
+
+<!--chapter:end:15-experiments.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Instrumental Variables and Natural Experiments {#ivnatural}
+
+<!--chapter:end:16-ivnatural.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Single-Group Pre-Post {#prepost}
+
+<!--chapter:end:17-prepost.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Multiple Group Post-Test Only {#postpost}
+
+<!--chapter:end:18-postpost.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Difference-in-Differences {#did}
+
+<!--chapter:end:19-did.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Interrupted Time Series {#its}
+
+<!--chapter:end:20-its.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Regression Discontinuity {#rd}
+
+<!--chapter:end:21-rd.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Qualitative Research Designs {#qualdesigns}
+
+<!--chapter:end:22-qualesigns.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Case Reports {#case}
+
+<!--chapter:end:23-case.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Cross-Sectional and Correlational Studies {#xsectional}
+
+<!--chapter:end:24-xsectional.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Case-Control Studies {#casecontrol}
+
+<!--chapter:end:25-casecontrol.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Cohort Studies {#cohort}
+
+<!--chapter:end:26-cohort.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Diagnostic Accuracy Studies {#accuracy}
+
+<!--chapter:end:27-accuracy.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Medical Records and Clinical Prediction Modeling {#prediction}
+
+<!--chapter:end:28-prediction.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Implementation Research {#implementation}
+
+<!--chapter:end:29-implementation.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Sampling and Participant Recruitment {#sampling}
+
+<!--chapter:end:30-sampling.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# (PART) WRITE THE METHOD SECTION {-}
+
+# Surveys {#surveys}
+
+<!--chapter:end:31-surveys.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Non-Survey Instruments {#nonsurvey}
+
+<!--chapter:end:33-nonsurvey.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Qualitative Data Collection {#qualdata}
+
+<!--chapter:end:34-qualdata.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Secondary Data Analysis {#secondary}
+
+<!--chapter:end:34b-secondary.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Pilot Trials and Preliminary Studies {#pilot}
+
+<!--chapter:end:35-pilot.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Power and Sample Size {#power}
+
+<!--chapter:end:36-power.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Research Ethics {#ethics}
+
+<!--chapter:end:38-ethics.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# (PART) CONDUCT THE STUDY {-}
+
+# Practice Open Science {#openscience}
+
+<!--chapter:end:39-openscience.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Fieldwork {#fieldwork}
+
+<!--chapter:end:40-fieldwork.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Data Processing {#data}
+
+<!--chapter:end:41-data.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# (PART) MAKE AN IMPACT {-}
+
+# Publish and Disseminate Your Work {#dissemination}
+
+<!--chapter:end:42-dissemination.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Impact Policy and Practice {#policy}
+
+<!--chapter:end:43-policy.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 60)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+  )
+```
+# Acknowledgements {-}
+
+<!--chapter:end:90-acknowledgements.Rmd-->
+

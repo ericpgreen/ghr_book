@@ -2,12 +2,31 @@
 \usepackage{mparhack} % https://tex.stackexchange.com/a/236380/30017
 \usepackage{parskip}
 
+% colors
+
+\definecolor{ghr-blue}{cmyk}{0.846, 0.234, 0.00, 0.212}
+\definecolor{ghr-orange}{cmyk}{0.0, 0.37, 0.757, 0.098}
+
+\hypersetup{colorlinks,linkcolor=,urlcolor=ghr-orange}
+
 % citations
 
 \PassOptionsToPackage{round}{natbib}
 \setcitestyle{super}
 \renewcommand*{\citep}[1]{{\cite{#1}}}
 \renewcommand*{\citet}[1]{{\cite{#1}}}
+
+\usepackage[nottoc]{tocbibind}
+
+%\renewcommand{\bibsection}{\chapter{References}}
+
+% icons
+
+\usepackage{fontawesome5}
+
+% break with tufte on subsubsections
+
+\let\subsubsection\subsection
 
 % fonts
 
@@ -47,33 +66,46 @@
 \colorlet{rulecolor}{Gainsboro!40!Lavender}
 \usepackage{lipsum}
 
+\titleclass{\part}{top}
+\titleformat{\part}[display]
+  {\huge\bfseries\sffamily\centering}{\partname~\thepart}{0pt}{}
+\titlespacing*{\part}{0pt}{40pt}{40pt}
+
 \titleformat{\chapter}[display]
 {\filcenter}{\mbox{}\xrfill[0.4ex]{3pt}[rulecolor]\bfseries\sffamily{\large\enspace\chaptername\space\thechapter}\enspace\xrfill[0.4ex]{3pt}[rulecolor]\mbox{}}{0.3ex} {{\color{rulecolor}\titlerule[1pt]}\vskip3ex\huge\bfseries\sffamily}[\medskip{\color{rulecolor}\titlerule[1pt]}]
 
 \usepackage{titling}
 
-\pretitle{\begin{flushleft}\huge\bfseries}
+\pretitle{\begin{flushleft}\huge\bfseries\sffamily}
 \posttitle{\par\end{flushleft}}
 
-\preauthor{\begin{flushleft}\Large\bfseries}
+\preauthor{\begin{flushleft}\Large\bfseries\sffamily}
 \postauthor{\par\end{flushleft}}
 
-\predate{\begin{flushleft}\large\mdseries}
+\predate{\begin{flushleft}\large\mdseries\sffamily}
 \postdate{\par\end{flushleft}}
 
 \titleformat*{\section}{\LARGE\bfseries\sffamily}
 \titleformat*{\subsection}{\Large\bfseries\sffamily}
 \usepackage[svgnames]{xcolor}
 
+\let\cleardoublepage\clearpage
+
 % table of contents
 
 \usepackage{titletoc}
 
 \contentsmargin[1cm]{0cm}
-\titlecontents{chapter}[0em]{\vskip12pt\Large\bfseries\sffamily}
+
+\titlecontents{part}[-1.9em]{\vskip6pt\LARGE\bfseries\sffamily}
+{\thecontentslabel\enspace}
+{\hspace{.5em}}
+{ \hfill\contentspage}[\vskip 0pt]
+
+\titlecontents{chapter}[0em]{\medskip\Large\bfseries\sffamily}
 {\thecontentslabel\enspace}
 {\hspace{1.05em}}
-{ \hfill\contentspage}[\vskip 6pt]
+{ \hfill\contentspage}[\vskip 4pt]
 
 \titlecontents{section}[1em]{\mdseries\sffamily}
 {\thecontentslabel\enspace}
@@ -91,6 +123,48 @@
 % margins
 
 % The default minimum amount of space between \marginnotes is 10 pt.
-%\setlength\marginparpush{10pt}
+\setlength\marginparpush{15pt}
 
 \AtBeginEnvironment{marginfigure}{\linespread{0.5}}
+\AtBeginEnvironment{marginnote}{\linespread{0.5}}
+
+\makeatletter
+\renewcommand{\footnotelayout}{\@tufte@sidenote@font\@tufte@sidenote@justification\linespread{0.5}}
+\makeatother
+
+
+% https://tex.stackexchange.com/a/614005/30017
+\makeatletter
+\renewcommand\marginnote[2][0pt]{%
+    \ifthenelse{\boolean{@tufte@loadnatbib}}{%
+        \let\cite\@tufte@infootnote@cite%   use the in-sidenote \cite command
+    }{}%
+    \gdef\@tufte@citations{}%           clear out any old citations
+    \marginpar{\setstretch{0.5}\hbox{}\vspace*{#1}\@tufte@marginnote@font\@tufte@marginnote@justification\@tufte@margin@par\vspace*{-1\baselineskip}\noindent #2}%
+    \@tufte@print@citations%            print any citations
+    \ifthenelse{\boolean{@tufte@loadnatbib}}{%
+        \let\cite\@tufte@normal@cite%       go back to using normal in-text \cite command
+    }{}%
+}
+\makeatother
+
+% quote
+
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{newquote}[1][]{%
+    colback=black!5,
+    colframe=black!5,
+    notitle,
+    sharp corners,
+    borderline west={2pt}{0pt}{ghr-blue!80!black},
+    enhanced,
+    breakable,
+    }
+
+\renewcommand{\quote}{\newquote}
+\renewcommand{\endquote}{\endnewquote}
+
+
+% margin note
+

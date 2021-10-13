@@ -12,7 +12,7 @@ bookdown::pdf_book:
   base_format: tufte::tufte_book
   highlight: tango
   toc: true
-  toc_depth: 1
+  toc_depth: 2
 msmbstyle::msmb_html_book:
   tufte_variant: "envisioned"
   toc: TRUE
